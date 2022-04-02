@@ -9,6 +9,7 @@ import {
   ParseIntPipe,
 } from '@nestjs/common';
 import {
+  ApiBadRequestResponse,
   ApiCreatedResponse,
   ApiNotFoundResponse,
   ApiOkResponse,
@@ -45,6 +46,7 @@ export class ApartmentController {
   }
 
   @ApiCreatedResponse({ type: Apartment })
+  @ApiBadRequestResponse()
   @Post()
   createApartment(@Body() body: CreateApartmentDto): Apartment {
     return this.apartmentsService.createApartment(body);
