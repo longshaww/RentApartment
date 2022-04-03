@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { BenChoThue as Lessor } from '../../output/entities/BenChoThue';
-import { Like, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { GetOneLessorDto } from './dto/getOne-lessor.dto';
 import { LessorRelations as relations } from 'src/relations/relations';
 
