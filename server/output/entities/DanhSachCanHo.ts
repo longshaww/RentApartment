@@ -7,29 +7,29 @@ import {
   OneToMany,
 } from "typeorm";
 import { ChiTietDatPhong } from "./ChiTietDatPhong";
-import { DanhSachTinhNang } from "./DanhSachTinhNang";
-import { HinhAnh } from "./HinhAnh";
-import { TienNghi } from "./TienNghi";
 import { BenChoThue } from "./BenChoThue";
+import { DanhSachTinhNang } from "./DanhSachTinhNang";
+import { HinhAnhCanHo } from "./HinhAnhCanHo";
+import { TienNghiCanHo } from "./TienNghiCanHo";
 
-@Index("PK__DanhSach__27C693C4185C3CAF", ["maCanHo", "maBct", "maLoaiCanHo"], {
+@Index("PK__DanhSach__7D1DD97D527A67C8", ["maCanHo", "maBct", "maLoaiLuuTru"], {
   unique: true,
 })
 @Entity("DanhSachCanHo", { schema: "dbo" })
 export class DanhSachCanHo {
-  @Column("nvarchar", { primary: true, name: "MaCanHo", length: 20 })
+  @Column("nvarchar", { primary: true, name: "MaCanHo", length: 255 })
   maCanHo: string;
 
-  @Column("nvarchar", { primary: true, name: "MaBCT", length: 20 })
+  @Column("nvarchar", { primary: true, name: "MaBCT", length: 255 })
   maBct: string;
 
-  @Column("nvarchar", { primary: true, name: "MaLoaiCanHo", length: 20 })
-  maLoaiCanHo: string;
+  @Column("nvarchar", { primary: true, name: "MaLoaiLuuTru", length: 255 })
+  maLoaiLuuTru: string;
 
-  @Column("nvarchar", { name: "TenCanHo", nullable: true, length: 20 })
+  @Column("nvarchar", { name: "TenCanHo", nullable: true, length: 255 })
   tenCanHo: string | null;
 
-  @Column("nvarchar", { name: "DienTich", nullable: true, length: 20 })
+  @Column("nvarchar", { name: "DienTich", nullable: true, length: 255 })
   dienTich: string | null;
 
   @Column("float", { name: "Gia", nullable: true, precision: 53 })
@@ -47,31 +47,25 @@ export class DanhSachCanHo {
   )
   chiTietDatPhongs: ChiTietDatPhong[];
 
-  @ManyToOne(
-    () => DanhSachTinhNang,
-    (danhSachTinhNang) => danhSachTinhNang.danhSachCanHos
-  )
-  @JoinColumn([{ name: "MaTinhNang", referencedColumnName: "maTinhNang" }])
-  maTinhNang: DanhSachTinhNang;
-
-  @ManyToOne(() => HinhAnh, (hinhAnh) => hinhAnh.danhSachCanHos)
-  @JoinColumn([
-    { name: "MaHinhAnh", referencedColumnName: "maHinhAnh" },
-    { name: "MaLoaiHinhAnh", referencedColumnName: "maLoaiHinhAnh" },
-  ])
-  hinhAnh: HinhAnh;
-
-  @ManyToOne(() => TienNghi, (tienNghi) => tienNghi.danhSachCanHos)
-  @JoinColumn([
-    { name: "MaTienNghi", referencedColumnName: "maTienNghi" },
-    { name: "MaLoaiTienNghi", referencedColumnName: "maLoaiTienNghi" },
-  ])
-  tienNghi: TienNghi;
-
   @ManyToOne(() => BenChoThue, (benChoThue) => benChoThue.danhSachCanHos)
   @JoinColumn([
     { name: "MaBCT", referencedColumnName: "maBct" },
-    { name: "MaLoaiCanHo", referencedColumnName: "maLoaiCanHo" },
+    { name: "MaLoaiLuuTru", referencedColumnName: "maLoaiLuuTru" },
   ])
   benChoThue: BenChoThue;
+
+  @OneToMany(
+    () => DanhSachTinhNang,
+    (danhSachTinhNang) => danhSachTinhNang.danhSachCanHo
+  )
+  danhSachTinhNangs: DanhSachTinhNang[];
+
+  @OneToMany(() => HinhAnhCanHo, (hinhAnhCanHo) => hinhAnhCanHo.danhSachCanHo)
+  hinhAnhCanHos: HinhAnhCanHo[];
+
+  @OneToMany(
+    () => TienNghiCanHo,
+    (tienNghiCanHo) => tienNghiCanHo.danhSachCanHo
+  )
+  tienNghiCanHos: TienNghiCanHo[];
 }
