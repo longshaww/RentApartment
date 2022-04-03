@@ -3,34 +3,34 @@ import { DanhSachCanHo } from "./DanhSachCanHo";
 import { DanhSachDatPhong } from "./DanhSachDatPhong";
 
 @Index(
-  "PK__ChiTietD__3138C4D6AA8B67AE",
-  ["maDatPhong", "maCanHo", "maBct", "maLoaiCanHo"],
+  "PK__ChiTietD__A495707D3442063D",
+  ["maDatPhong", "maCanHo", "maBct", "maLoaiLuuTru"],
   { unique: true }
 )
 @Entity("ChiTietDatPhong", { schema: "dbo" })
 export class ChiTietDatPhong {
-  @Column("nvarchar", { primary: true, name: "MaDatPhong", length: 20 })
+  @Column("nvarchar", { primary: true, name: "MaDatPhong", length: 255 })
   maDatPhong: string;
 
-  @Column("nvarchar", { primary: true, name: "MaCanHo", length: 20 })
+  @Column("nvarchar", { primary: true, name: "MaCanHo", length: 255 })
   maCanHo: string;
 
-  @Column("nvarchar", { primary: true, name: "MaBCT", length: 20 })
+  @Column("nvarchar", { primary: true, name: "MaBCT", length: 255 })
   maBct: string;
 
-  @Column("nvarchar", { primary: true, name: "MaLoaiCanHo", length: 20 })
-  maLoaiCanHo: string;
+  @Column("nvarchar", { primary: true, name: "MaLoaiLuuTru", length: 255 })
+  maLoaiLuuTru: string;
 
-  @Column("nvarchar", { name: "TenKH", nullable: true, length: 50 })
+  @Column("nvarchar", { name: "TenKH", nullable: true, length: 255 })
   tenKh: string | null;
 
-  @Column("nvarchar", { name: "EmailKH", nullable: true, length: 50 })
+  @Column("nvarchar", { name: "EmailKH", nullable: true, length: 255 })
   emailKh: string | null;
 
-  @Column("nvarchar", { name: "SDT", nullable: true, length: 50 })
+  @Column("nvarchar", { name: "SDT", nullable: true, length: 255 })
   sdt: string | null;
 
-  @Column("nvarchar", { name: "MoTaYeuCau", nullable: true, length: 50 })
+  @Column("nvarchar", { name: "MoTaYeuCau", nullable: true, length: 255 })
   moTaYeuCau: string | null;
 
   @Column("datetime", { name: "ThoiGianNhan", nullable: true })
@@ -46,7 +46,7 @@ export class ChiTietDatPhong {
   @JoinColumn([
     { name: "MaCanHo", referencedColumnName: "maCanHo" },
     { name: "MaBCT", referencedColumnName: "maBct" },
-    { name: "MaLoaiCanHo", referencedColumnName: "maLoaiCanHo" },
+    { name: "MaLoaiLuuTru", referencedColumnName: "maLoaiLuuTru" },
   ])
   danhSachCanHo: DanhSachCanHo;
 

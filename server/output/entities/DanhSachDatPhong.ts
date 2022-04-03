@@ -1,10 +1,10 @@
 import { Column, Entity, Index, OneToMany } from "typeorm";
 import { ChiTietDatPhong } from "./ChiTietDatPhong";
 
-@Index("PK__DanhSach__6344ADEA5B9550F1", ["maDatPhong"], { unique: true })
+@Index("PK__DanhSach__6344ADEAD855E57C", ["maDatPhong"], { unique: true })
 @Entity("DanhSachDatPhong", { schema: "dbo" })
 export class DanhSachDatPhong {
-  @Column("nvarchar", { primary: true, name: "MaDatPhong", length: 20 })
+  @Column("nvarchar", { primary: true, name: "MaDatPhong", length: 255 })
   maDatPhong: string;
 
   @Column("float", { name: "GIaCanHo", nullable: true, precision: 53 })
