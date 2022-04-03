@@ -17,38 +17,40 @@ import {
 } from '@nestjs/swagger';
 import { ApiTags } from '@nestjs/swagger';
 import { ApartmentService } from './apartment.service';
-import { CreateApartmentDto } from './dto/create-apartment.dto';
-import { Apartment } from './entities/apartment.entity';
+import { DanhSachCanHo as Apartment } from '../../output/entities/DanhSachCanHo';
 
 @ApiTags('Apartment')
 @Controller('apartment')
 export class ApartmentController {
   constructor(private apartmentsService: ApartmentService) {}
 
+  @ApiQuery({ name: 'tenCanHo', required: false })
   @ApiOkResponse({ type: Apartment, isArray: true })
-  @ApiQuery({ name: 'name', required: false })
+  @ApiNotFoundResponse()
   @Get()
-  getApartments(@Query('name') name?: string): Apartment[] {
-    return this.apartmentsService.findAll(name);
+  async getAll(@Query('tenCanHo') tenCanHo?: string): Promise<Apartment[]> {
+    // Advanced Search
+    const apartments = this.apartmentsService.getAll(tenCanHo);
+    if (!apartments) {
+      throw new NotFoundException();
+    }
+    return apartments;
   }
 
-  @ApiNotFoundResponse()
-  @ApiOkResponse({ type: Apartment })
   @Get(':id')
-  getApartmentById(@Param('id', ParseIntPipe) id: number): Apartment {
-    const apartment = this.apartmentsService.findById(id);
+  @ApiOkResponse({ type: Apartment })
+  @ApiNotFoundResponse()
+  async getOneById(@Param('id') id: string): Promise<Apartment> {
+    const handleParam = id.split('&');
+    const obj = {
+      maCanHo: handleParam[0],
+      maBct: handleParam[1],
+      maLoaiLuuTru: handleParam[2],
+    };
+    const apartment = this.apartmentsService.getOneById(obj);
     if (!apartment) {
       throw new NotFoundException();
-      //BadRequestException
-      //InternalServerErrorException
     }
     return apartment;
-  }
-
-  @ApiCreatedResponse({ type: Apartment })
-  @ApiBadRequestResponse()
-  @Post()
-  createApartment(@Body() body: CreateApartmentDto): Apartment {
-    return this.apartmentsService.createApartment(body);
   }
 }

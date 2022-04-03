@@ -1,29 +1,37 @@
 import { Injectable } from '@nestjs/common';
-import { CreateApartmentDto } from './dto/create-apartment.dto';
-import { Apartment } from './entities/apartment.entity';
+import { DanhSachCanHo as Apartment } from '../../output/entities/DanhSachCanHo';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { ApartmentRelations as relations } from '../relations/relations';
+import { GetOneApartmentDto } from './dto/getOne-apartment.dto';
 
 @Injectable()
 export class ApartmentService {
-  private apartments: Apartment[] = [
-    { id: 0, name: 'Traveloka' },
-    { id: 1, name: 'FPT Telecom' },
-    { id: 2, name: 'Viettel Telecom' },
-  ];
+  constructor(
+    @InjectRepository(Apartment)
+    private apartmentRepository: Repository<Apartment>,
+  ) {}
 
-  findAll(name?: string): Apartment[] {
-    if (name) {
-      return this.apartments.filter((apartment) => apartment.name === name);
+  getAll(tenCanHo: string): Promise<Apartment[]> {
+    if (tenCanHo) {
+      return this.apartmentRepository.find({
+        relations,
+        where: {
+          tenCanHo: tenCanHo,
+        },
+      });
     }
-    return this.apartments;
+    return this.apartmentRepository.find({
+      relations,
+    });
   }
 
-  findById(apartmentId: number): Apartment {
-    return this.apartments.find((apartment) => apartment.id === apartmentId);
-  }
-
-  createApartment(createApartmentDto: CreateApartmentDto): Apartment {
-    const newApartment = { id: Date.now(), ...createApartmentDto };
-    this.apartments.push(newApartment);
-    return newApartment;
+  getOneById(id: GetOneApartmentDto): Promise<Apartment> {
+    try {
+      const lessor = this.apartmentRepository.findOneOrFail(id); // SELECT * FROM lessor WHERE lessor.id = id
+      return lessor;
+    } catch (err) {
+      throw err;
+    }
   }
 }

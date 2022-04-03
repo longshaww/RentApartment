@@ -6,4 +6,12 @@ const LessorRelations = [
   'tienNghiBenChoThues',
 ];
 
-export { LessorRelations };
+const ApartmentRelations = [
+  'chiTietDatPhongs',
+  'benChoThue',
+  'danhSachTinhNangs',
+  'hinhAnhCanHos',
+  'tienNghiCanHos',
+];
+
+export { LessorRelations, ApartmentRelations };
