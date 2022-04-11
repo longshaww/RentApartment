@@ -17,7 +17,7 @@ import {
 } from '@nestjs/swagger';
 import { ApiTags } from '@nestjs/swagger';
 import { ApartmentService } from './apartment.service';
-import { DanhSachCanHo as Apartment } from '../../output/entities/DanhSachCanHo';
+import { CanHo as Apartment } from '../../output/entities/CanHo';
 
 @ApiTags('Apartment')
 @Controller('apartment')
@@ -41,11 +41,10 @@ export class ApartmentController {
   @ApiOkResponse({ type: Apartment })
   @ApiNotFoundResponse()
   async getOneById(@Param('id') id: string): Promise<Apartment> {
-    const handleParam = id.split('&');
+    const handleParam = id.split('-');
     const obj = {
-      maCanHo: handleParam[0],
-      maBct: handleParam[1],
-      maLoaiLuuTru: handleParam[2],
+      MaCanHo: handleParam[0],
+      MaBCT: handleParam[1],
     };
     const apartment = this.apartmentsService.getOneById(obj);
     if (!apartment) {

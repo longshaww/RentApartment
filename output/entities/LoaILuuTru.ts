@@ -1,15 +1,15 @@
 import { Column, Entity, Index, OneToMany } from "typeorm";
 import { BenChoThue } from "./BenChoThue";
 
-@Index("PK__LoaILuuT__4B5B4B9F3D859323", ["maLoaiLuuTru"], { unique: true })
+@Index("PK__LoaILuuT__4B5B4B9F5A2CE904", ["maLoaiLuuTru"], { unique: true })
 @Entity("LoaILuuTru", { schema: "dbo" })
 export class LoaILuuTru {
   @Column("nvarchar", { primary: true, name: "MaLoaiLuuTru", length: 255 })
   maLoaiLuuTru: string;
 
-  @Column("nvarchar", { name: "TenLoaiCanHo", nullable: true, length: 255 })
-  tenLoaiCanHo: string | null;
+  @Column("nvarchar", { name: "TenLoaiLuuTru", length: 255 })
+  tenLoaiLuuTru: string;
 
-  @OneToMany(() => BenChoThue, (benChoThue) => benChoThue.maLoaiLuuTru2)
+  @OneToMany(() => BenChoThue, (benChoThue) => benChoThue.maLoaiLuuTru)
   benChoThues: BenChoThue[];
 }

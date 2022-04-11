@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { DanhSachCanHo as Apartment } from '../../output/entities/DanhSachCanHo';
+import { CanHo as Apartment } from '../../output/entities/CanHo';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { ApartmentRelations as relations } from '../relations/relations';
@@ -28,8 +28,17 @@ export class ApartmentService {
 
   getOneById(id: GetOneApartmentDto): Promise<Apartment> {
     try {
-      const lessor = this.apartmentRepository.findOneOrFail(id); // SELECT * FROM lessor WHERE lessor.id = id
-      return lessor;
+      const maBct = id.MaBCT;
+      const maCanHo = id.MaCanHo;
+
+      const apartment = this.apartmentRepository.findOne({
+        relations,
+        where: {
+          maCanHo,
+          maBct,
+        },
+      });
+      return apartment;
     } catch (err) {
       throw err;
     }

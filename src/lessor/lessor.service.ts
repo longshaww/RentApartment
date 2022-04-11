@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { BenChoThue as Lessor } from '../../output/entities/BenChoThue';
 import { Repository } from 'typeorm';
-import { GetOneLessorDto } from './dto/getOne-lessor.dto';
 import { LessorRelations as relations } from 'src/relations/relations';
 
 @Injectable()
@@ -26,7 +25,7 @@ export class LessorService {
     }); // SELECT * FROM lessor
   }
 
-  getOneById(id: GetOneLessorDto): Promise<Lessor> {
+  getOneById(id: string): Promise<Lessor> {
     try {
       const lessor = this.lessorRepository.findOneOrFail(id); // SELECT * FROM lessor WHERE lessor.id = id
       return lessor;

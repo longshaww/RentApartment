@@ -1,11 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString, MaxLength } from 'class-validator';
 
 export class GetOneApartmentDto {
   @ApiProperty()
-  maCanHo: string;
+  MaCanHo: string;
   @ApiProperty()
-  maBct: string;
-  @ApiProperty()
-  maLoaiLuuTru: string;
+  MaBCT: string;
 }

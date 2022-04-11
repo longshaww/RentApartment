@@ -41,12 +41,7 @@ export class LessorController {
   @ApiOkResponse({ type: Lessor })
   @ApiNotFoundResponse()
   async getOneById(@Param('id') id: string): Promise<Lessor> {
-    const handleParam = id.split('&');
-    const obj = {
-      maBct: handleParam[0],
-      maLoaiLuuTru: handleParam[1],
-    };
-    const lessor = this.lessorService.getOneById(obj);
+    const lessor = this.lessorService.getOneById(id);
     if (!lessor) {
       throw new NotFoundException();
     }

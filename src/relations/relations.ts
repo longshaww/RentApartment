@@ -1,17 +1,15 @@
 const LessorRelations = [
-  'maLoaiLuuTru2',
-  'binhLuans',
-  'danhSachCanHos',
+  'maLoaiLuuTru',
+  'canHos',
   'hinhAnhBcts',
   'tienNghiBenChoThues',
 ];
 
 const ApartmentRelations = [
-  'chiTietDatPhongs',
-  'benChoThue',
-  'danhSachTinhNangs',
+  'maBct2',
+  'canHoTienNghiCanHos',
   'hinhAnhCanHos',
-  'tienNghiCanHos',
+  'phieuDatPhongs',
 ];
 
 export { LessorRelations, ApartmentRelations };
