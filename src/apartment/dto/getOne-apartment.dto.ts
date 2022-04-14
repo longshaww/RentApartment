@@ -2,7 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 
 export class GetOneApartmentDto {
   @ApiProperty()
-  MaCanHo: string;
+  maCanHo: string;
   @ApiProperty()
-  MaBCT: string;
+  maBct: string;
 }
