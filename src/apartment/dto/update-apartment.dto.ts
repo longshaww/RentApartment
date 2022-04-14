@@ -1,9 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { HinhAnhCanHo } from 'output/entities/HinhAnhCanHo';
-import { Generated, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
-export class CreateApartmentDto {
-  @ApiProperty()
-  maBct: string;
+import { OneToMany } from 'typeorm';
+
+export class UpdateApartmentDTO {
   @ApiProperty()
   tenCanHo: string;
   @ApiProperty()
@@ -14,8 +13,7 @@ export class CreateApartmentDto {
   soLuongKhach: number;
   @ApiProperty()
   soLuongCon: number;
-  @ApiProperty()
-  hinhAnh: string[];
+
   @ApiProperty()
   moTa: string | null;
 }

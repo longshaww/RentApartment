@@ -1,9 +1,4 @@
-const LessorRelations = [
-  'maLoaiLuuTru',
-  'canHos',
-  'hinhAnhBcts',
-  'tienNghiBenChoThues',
-];
+const LessorRelations = ['maLoaiLuuTru', 'hinhAnhBcts'];
 
 const ApartmentRelations = [
   'maBct2',
