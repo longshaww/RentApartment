@@ -47,18 +47,19 @@ export class LessorController {
     }
     return lessor;
   }
-  // @Post()
-  // create(@Body() createLessorDto: CreateLessorDto) {
-  //   return this.lessorService.create(createLessorDto);
-  // }
 
-  // @Patch(':id')
-  // update(@Param('id') id: string, @Body() updateLessorDto: UpdateLessorDto) {
-  //   return this.lessorService.update(+id, updateLessorDto);
-  // }
+  @Post()
+  create(@Body() createLessorDto: CreateLessorDto) {
+    return this.lessorService.create(createLessorDto);
+  }
 
-  // @Delete(':id')
-  // remove(@Param('id') id: string) {
-  //   return this.lessorService.remove(+id);
-  // }
+  @Patch(':id')
+  update(@Param('id') id: string, @Body() updateLessorDto: UpdateLessorDto) {
+    return this.lessorService.update(id, updateLessorDto);
+  }
+
+  @Delete(':id')
+  remove(@Param('id') id: string) {
+    return this.lessorService.remove(id);
+  }
 }
