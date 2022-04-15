@@ -3,9 +3,14 @@ import { LessorService } from './lessor.service';
 import { LessorController } from './lessor.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { BenChoThue as Lessor } from '../../output/entities/BenChoThue';
+import { HinhAnhBct as LessorImages } from '../../output/entities/HinhAnhBct';
+import { LoaILuuTru as TypeStay } from '../../output/entities/LoaILuuTru';
+import { TienNghiBenChoThue as LessorCovenient } from '../../output/entities/TienNghiBenChoThue';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Lessor])],
+  imports: [
+    TypeOrmModule.forFeature([Lessor, LessorImages, TypeStay, LessorCovenient]),
+  ],
   controllers: [LessorController],
   providers: [LessorService],
 })

@@ -1,13 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { CanHo as Apartment } from '../../output/entities/CanHo';
 import { HinhAnhCanHo as ApartmentImage } from 'output/entities/HinhAnhCanHo';
+import { TienNghiCanHo as ApartmentCovenient } from 'output/entities/TienNghiCanHo';
+import { CanHoTienNghiCanHo as ApartmentXApartmentCovenient } from 'output/entities/CanHoTienNghiCanHo';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { ApartmentRelations as relations } from '../relations/relations';
 import { GetOneApartmentDto } from './dto/getOne-apartment.dto';
 import { UpdateApartmentDTO } from './dto/update-apartment.dto';
 import { CreateApartmentDto } from './dto/create-apartment.dto';
-import { ApiProperty } from '@nestjs/swagger';
 const shortid = require('shortid');
 @Injectable()
 export class ApartmentService {
@@ -16,19 +17,36 @@ export class ApartmentService {
     private apartmentRepository: Repository<Apartment>,
     @InjectRepository(ApartmentImage)
     private apartmentImageRepository: Repository<ApartmentImage>,
+    @InjectRepository(ApartmentCovenient)
+    private apartmentCovenientRepository: Repository<ApartmentCovenient>,
+    @InjectRepository(ApartmentXApartmentCovenient)
+    private ApartmentXApartmentCovenientRepository: Repository<ApartmentXApartmentCovenient>,
   ) {}
 
   async create(createApartmentDto: CreateApartmentDto): Promise<Apartment> {
     try {
-      const newApartment = await this.apartmentRepository.create(
-        createApartmentDto,
-      );
+      const newApartment = this.apartmentRepository.create(createApartmentDto);
       newApartment.maCanHo = `CH${shortid.generate()}`;
       await this.apartmentRepository.save(newApartment);
 
+      //create new convenient
+      const convenient = await this.apartmentCovenientRepository.find();
+      for (let i = 0; i < convenient.length; i++) {
+        const newCovenient = this.ApartmentXApartmentCovenientRepository.create(
+          {
+            maCanHo: newApartment.maCanHo,
+            maBct: newApartment.maBct,
+            maTienNghiCanHo: convenient[i].maTienNghiCanHo,
+            maTienNghiCanHo2: convenient[i],
+          },
+        );
+        newCovenient.canHo = newApartment;
+        await this.ApartmentXApartmentCovenientRepository.save(newCovenient);
+      }
+      //create new Images
       const listApartmentImages = createApartmentDto.hinhAnh;
       for (let i = 0; i < listApartmentImages.length; i++) {
-        const newImage = await this.apartmentImageRepository.create({
+        const newImage = this.apartmentImageRepository.create({
           maHinhAnhCanHo: `HACH${shortid.generate()}`,
           urlImageCanHo: listApartmentImages[i].toString(),
         });

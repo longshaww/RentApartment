@@ -41,6 +41,7 @@ export class ApartmentController {
 
   @Post()
   @ApiCreatedResponse({ type: Apartment })
+  @ApiBadRequestResponse()
   create(@Body() createApartmentDto: CreateApartmentDto) {
     return this.apartmentsService.create(createApartmentDto);
   }
@@ -53,7 +54,7 @@ export class ApartmentController {
     // Advanced Search
     const apartments = this.apartmentsService.getAll(tenCanHo);
     if (!apartments) {
-      throw new NotFoundException();
+      throw new HttpException('Bad Request', HttpStatus.BAD_REQUEST);
     }
     return apartments;
   }
@@ -72,6 +73,7 @@ export class ApartmentController {
 
   @Patch(':id')
   @ApiOkResponse({ type: Apartment })
+  @ApiBadRequestResponse()
   update(
     @Param('id') id: string,
     @Body() updateApartmentDto: UpdateApartmentDTO,
@@ -85,6 +87,7 @@ export class ApartmentController {
 
   @Delete(':id')
   @ApiOkResponse({ type: Apartment })
+  @ApiBadRequestResponse()
   remove(@Param('id') id: string) {
     if (!Param) {
       throw new HttpException('Bad Request', HttpStatus.BAD_REQUEST);
