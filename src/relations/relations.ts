@@ -1,13 +1,13 @@
 const LessorRelations = [
   'maLoaiLuuTru',
-  'tienNghiBenChoThues',
+  // 'tienNghiBenChoThues',
   'canHos',
   'hinhAnhBcts',
 ];
 
 const ApartmentRelations = [
-  'maBct2',
-  'canHoTienNghiCanHos',
+  // 'maBct2',
+  // 'canHoTienNghiCanHos',
   'hinhAnhCanHos',
   'phieuDatPhongs',
 ];
