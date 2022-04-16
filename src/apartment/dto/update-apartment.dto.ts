@@ -1,6 +1,4 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { HinhAnhCanHo } from 'output/entities/HinhAnhCanHo';
-import { OneToMany } from 'typeorm';
 
 export class UpdateApartmentDTO {
   @ApiProperty()
@@ -13,7 +11,8 @@ export class UpdateApartmentDTO {
   soLuongKhach: number;
   @ApiProperty()
   soLuongCon: number;
-
+  @ApiProperty()
+  hinhAnh: string[];
   @ApiProperty()
   moTa: string | null;
 }

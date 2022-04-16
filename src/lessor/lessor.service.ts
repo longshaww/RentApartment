@@ -4,12 +4,21 @@ import { BenChoThue as Lessor } from '../../output/entities/BenChoThue';
 import { HinhAnhBct as LessorImages } from '../../output/entities/HinhAnhBct';
 import { LoaILuuTru as TypeStay } from '../../output/entities/LoaILuuTru';
 import { TienNghiBenChoThue as LessorCovenient } from '../../output/entities/TienNghiBenChoThue';
-import { Repository } from 'typeorm';
+import { getManager, Repository } from 'typeorm';
 import { LessorRelations as relations } from 'src/relations/relations';
 import { CreateLessorDto } from './dto/create-lessor.dto';
 import { UpdateLessorDto } from './dto/update-lessor.dto';
 
 const shortid = require('shortid');
+
+async function convenientQueryByID(id) {
+  const manager = getManager();
+  return await manager.query(`
+     select TenTienNghiBCT
+      from TienNghiBenChoThue
+      where EXISTS  (select MaTienNghiBCT,MaBCT from BenChoThue_TienNghiBenChoThue
+      where BenChoThue_TienNghiBenChoThue.MaBCT = '${id}')`);
+}
 @Injectable()
 export class LessorService {
   constructor(
@@ -32,9 +41,22 @@ export class LessorService {
         },
       });
     }
-    return await this.lessorRepository.find({
+    const manager = getManager();
+    const convenientQuery = await manager.query(`
+    select TenTienNghiBCT
+    from TienNghiBenChoThue
+    where EXISTS  (select MaTienNghiBCT,MaBCT from BenChoThue_TienNghiBenChoThue)`);
+    const selectNameCovenient = convenientQuery.map((item: any) => {
+      return item.TenTienNghiBCT;
+    });
+    const getAll = await this.lessorRepository.find({
       relations,
-    }); // SELECT * FROM lessor
+    });
+    const customize = getAll.map((item) => {
+      item.tienNghiBCT = selectNameCovenient;
+      return item;
+    });
+    return customize;
   }
 
   async getOneById(id: string): Promise<Lessor> {
@@ -43,6 +65,9 @@ export class LessorService {
         relations,
         where: { maBct: id },
       }); // SELECT * FROM lessor WHERE lessor.id = id
+
+      const convenientQuery = await convenientQueryByID(id);
+      lessor.tienNghiBCT = convenientQuery;
       return lessor;
     } catch (err) {
       throw err;
@@ -77,10 +102,13 @@ export class LessorService {
         newImage.maBct = newLessor;
         await this.lessorImagesRepository.save(newImage);
       }
-      return this.lessorRepository.findOneOrFail({
+      const findAndReturn = await this.lessorRepository.findOneOrFail({
         relations,
         where: { maBct: newLessor.maBct },
       });
+      const convenientQuery = await convenientQueryByID(findAndReturn.maBct);
+      findAndReturn.tienNghiBCT = convenientQuery;
+      return findAndReturn;
     } catch (err) {
       throw err;
     }
@@ -117,10 +145,13 @@ export class LessorService {
         newImage.maBct = updateLessor;
         await this.lessorImagesRepository.save(newImage);
       }
-      return this.lessorRepository.findOneOrFail({
+      const findAndReturn = await this.lessorRepository.findOneOrFail({
         relations,
         where: { maBct: id },
       });
+      const convenientQuery = await convenientQueryByID(id);
+      findAndReturn.tienNghiBCT = convenientQuery;
+      return findAndReturn;
     } catch (err) {
       throw err;
     }
@@ -129,16 +160,20 @@ export class LessorService {
   async remove(id: string): Promise<Lessor> {
     //findBCT then delete from table TienNghiBenChoThue
     // const thisLessor = await this.lessorRepository.findOneOrFail(id);
-    await this.lessorCovenientRepository
-      .createQueryBuilder('TienNghiBenChoThue')
-      .delete()
-      .from('BenChoThue_TienNghiBenChoThue')
-      .where('MaBCT = :MaBCT', { MaBCT: id })
-      .execute();
-    //delete from images
-    await this.lessorImagesRepository.delete({ maBct: { maBct: id } });
-    //delete lessor
-    const thisLessor = await this.lessorRepository.findOneOrFail(id);
-    return this.lessorRepository.remove(thisLessor);
+    try {
+      await this.lessorCovenientRepository
+        .createQueryBuilder('TienNghiBenChoThue')
+        .delete()
+        .from('BenChoThue_TienNghiBenChoThue')
+        .where('MaBCT = :MaBCT', { MaBCT: id })
+        .execute();
+      //delete from images
+      await this.lessorImagesRepository.delete({ maBct: { maBct: id } });
+      //delete lessor
+      const thisLessor = await this.lessorRepository.findOneOrFail(id);
+      return this.lessorRepository.remove(thisLessor);
+    } catch (err) {
+      throw err;
+    }
   }
 }

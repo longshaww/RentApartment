@@ -51,4 +51,5 @@ export class BenChoThue {
 
   @OneToMany(() => HinhAnhBct, (hinhAnhBct) => hinhAnhBct.maBct)
   hinhAnhBcts: HinhAnhBct[];
+  tienNghiBCT: [];
 }

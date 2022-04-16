@@ -53,4 +53,6 @@ export class CanHo {
 
   @OneToMany(() => PhieuDatPhong, (phieuDatPhong) => phieuDatPhong.canHo)
   phieuDatPhongs: PhieuDatPhong[];
+
+  tienNghiCanHo: [];
 }
