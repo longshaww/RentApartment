@@ -1,26 +1,121 @@
 import { Injectable } from '@nestjs/common';
+import { getManager, Repository } from 'typeorm';
 import { CreateBillDto } from './dto/create-bill.dto';
+
 import { UpdateBillDto } from './dto/update-bill.dto';
+import { KhachHang as Customer } from '../../output/entities/KhachHang';
+import { PhieuDatPhong as Bill } from '../../output/entities/PhieuDatPhong';
+import { ChiTietDatPhong as BillDetail } from '../../output/entities/ChiTietDatPhong';
+import { InjectRepository } from '@nestjs/typeorm';
+const shortid = require('shortid');
 
 @Injectable()
 export class BillService {
-  create(createBillDto: CreateBillDto) {
-    return 'This action adds a new bill';
+  constructor(
+    @InjectRepository(Bill)
+    private billRepository: Repository<Bill>,
+    @InjectRepository(BillDetail)
+    private billDetailRepository: Repository<BillDetail>,
+    @InjectRepository(Customer)
+    private customerRepository: Repository<Customer>,
+  ) {}
+
+  async create(createBillDto: CreateBillDto) {
+    //create new customer
+    const newCustomer = this.customerRepository.create();
+    newCustomer.maKhachHang = `KH${shortid.generate()}`;
+    newCustomer.ten = createBillDto.ten;
+    newCustomer.email = createBillDto.email;
+    newCustomer.sdt = createBillDto.sdt;
+    newCustomer.yeuCau = createBillDto.yeuCau;
+    await this.customerRepository.save(newCustomer);
+
+    //then create newBill
+    const newBill = this.billRepository.create();
+    newBill.maDatPhong = `DP${shortid.generate()}`;
+    newBill.thue = createBillDto.thue;
+    newBill.tongTien = createBillDto.tongTien;
+    newBill.ngayTao = createBillDto.ngayTao;
+    newBill.trangThai = createBillDto.trangThai;
+    newBill.maCanHo = createBillDto.maCanHo;
+    newBill.maBct = createBillDto.maBct;
+    newBill.maKhachHang = newCustomer.maKhachHang;
+    await this.billRepository.save(newBill);
+
+    //then create newCTDP;
+    const newBillDetail = this.billDetailRepository.create();
+    newBillDetail.maChiTietDatPhong = `CTDP${shortid.generate()}`;
+    newBillDetail.maCanHo = createBillDto.maCanHo;
+    newBillDetail.maBct = createBillDto.maBct;
+    newBillDetail.maDatPhong = newBill.maDatPhong;
+    newBillDetail.maKhachHang = newCustomer.maKhachHang;
+    newBillDetail.tongTienCanHo = createBillDto.tongTienCanHo;
+    newBillDetail.soLuongCanHo = createBillDto.soLuongCanHo;
+    newBillDetail.thoiGianNhan = createBillDto.thoiGianNhan;
+    newBillDetail.thoiGianTra = createBillDto.thoiGianTra;
+    await this.billDetailRepository.save(newBillDetail);
   }
 
-  findAll() {
-    return `This action returns all bill`;
+  async findAll() {
+    try {
+      const manager = getManager();
+      const getAll =
+        await manager.query(`select PhieuDatPhong.MaDatPhong,PhieuDatPhong.MaBCT,PhieuDatPhong.MaCanHo,PhieuDatPhong.MaKhachHang,
+                  Thue,TongTien,NgayTao,TongTienCanHo,SoLuongCanHo,ThoiGianNhan,ThoiGianTra
+                  from PhieuDatPhong
+                  inner join ChiTietDatPhong on PhieuDatPhong.MaDatPhong = ChiTietDatPhong.MaDatPhong`);
+      for (let i = 0; i < getAll.length; i++) {
+        const khachHang = await manager.query(`select * 
+                                          from KhachHang
+                                          where KhachHang.MaKhachHang = '${getAll[i].MaKhachHang}'`);
+
+        getAll[i].khachHang = khachHang[0];
+      }
+      return getAll;
+    } catch (err) {
+      throw err;
+    }
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} bill`;
+  async findOne(id: string) {
+    const manager = getManager();
+    try {
+      const getOne =
+        await manager.query(`select PhieuDatPhong.MaDatPhong,PhieuDatPhong.MaBCT,PhieuDatPhong.MaCanHo,PhieuDatPhong.MaKhachHang,
+                  Thue,TongTien,NgayTao,TongTienCanHo,SoLuongCanHo,ThoiGianNhan,ThoiGianTra
+                  from PhieuDatPhong
+                  inner join ChiTietDatPhong on PhieuDatPhong.MaDatPhong = ChiTietDatPhong.MaDatPhong
+                  where PhieuDatPhong.MaDatPhong = '${id}'`);
+      const KhachHang = await manager.query(`select * 
+                                            from KhachHang
+                                            where KhachHang.MaKhachHang = '${getOne[0].MaKhachHang}'`);
+      const obj = getOne[0];
+      obj.KhachHang = KhachHang;
+      return obj;
+    } catch (err) {
+      throw err;
+    }
   }
 
-  update(id: number, updateBillDto: UpdateBillDto) {
-    return `This action updates a #${id} bill`;
-  }
+  // update(id: number, updateBillDto: UpdateBillDto) {
+  //   return `This action updates a #${id} bill`;
+  // }
 
-  remove(id: number) {
-    return `This action removes a #${id} bill`;
+  async remove(id: string) {
+    const manager = getManager();
+    //delete bill detail
+    try {
+      await manager.query(`delete
+                        from ChiTietDatPhong
+                        where ChiTietDatPhong.MaDatPhong = '${id}' `);
+      //delete bill
+      await manager.query(`delete
+                        from PhieuDatPhong
+                        where PhieuDatPhong.MaDatPhong = '${id}'`);
+
+      return `Deleted bill ${id}`;
+    } catch (err) {
+      throw err;
+    }
   }
 }
