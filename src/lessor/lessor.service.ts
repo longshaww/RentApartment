@@ -131,6 +131,7 @@ export class LessorService {
         soSao: updateLessorDto.soSao,
         luotDanhGia: updateLessorDto.luotDanhGia,
         moTa: updateLessorDto.moTa,
+        diemTienNghi: updateLessorDto.diemTienNghi,
       });
       //Images update
       // Delete all Images

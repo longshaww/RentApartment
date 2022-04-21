@@ -6,20 +6,18 @@ import { CanHoTienNghiCanHo as ApartmentXApartmentCovenient } from 'output/entit
 import { InjectRepository } from '@nestjs/typeorm';
 import { getManager, Repository } from 'typeorm';
 import { ApartmentRelations as relations } from '../relations/relations';
-import { GetOneApartmentDto } from './dto/getOne-apartment.dto';
 import { UpdateApartmentDTO } from './dto/update-apartment.dto';
 import { CreateApartmentDto } from './dto/create-apartment.dto';
 const shortid = require('shortid');
 
-async function convenientQueryByID(maCanHo, maBct) {
+async function convenientQueryByID(maCanHo) {
   const manager = getManager();
   return await manager.query(
     `select MaTienNghiCanHo, TenTienNghiCanHo
           from TienNghiCanHo
           where exists  
           (select MaCanHo,MaBCT from CanHo_TienNghiCanHo
-          where CanHo_TienNghiCanHo.MaCanHo = '${maCanHo}' 
-          and CanHo_TienNghiCanHo.MaBCT='${maBct}') `,
+          where CanHo_TienNghiCanHo.MaCanHo = '${maCanHo}') `,
   );
 }
 @Injectable()
@@ -65,14 +63,10 @@ export class ApartmentService {
       }
       const findAndReturn = await this.apartmentRepository.findOneOrFail({
         where: {
-          maBct: newApartment.maBct,
           maCanHo: newApartment.maCanHo,
         },
       });
-      const convenientQuery = await convenientQueryByID(
-        findAndReturn.maCanHo,
-        findAndReturn.maBct,
-      );
+      const convenientQuery = await convenientQueryByID(findAndReturn.maCanHo);
 
       findAndReturn.tienNghiCanHo = convenientQuery;
       return findAndReturn;
@@ -119,19 +113,15 @@ export class ApartmentService {
     return customize;
   }
 
-  async getOneById(id: GetOneApartmentDto): Promise<Apartment> {
+  async getOneById(id: string): Promise<Apartment> {
     try {
-      const maCanHo = id.maCanHo;
-      const maBct = id.maBct;
-
       const apartment = await this.apartmentRepository.findOne({
         relations,
         where: {
-          maCanHo,
-          maBct,
+          maCanHo: id,
         },
       });
-      const convenientQuery = await convenientQueryByID(maCanHo, maBct);
+      const convenientQuery = await convenientQueryByID(id);
       apartment.tienNghiCanHo = convenientQuery;
       return apartment;
     } catch (err) {
@@ -139,12 +129,14 @@ export class ApartmentService {
     }
   }
   async update(
-    id: GetOneApartmentDto,
+    id: string,
     updateApartmentDto: UpdateApartmentDTO,
   ): Promise<Apartment> {
     try {
       //FindOne
-      const updateApartment = await this.apartmentRepository.findOneOrFail(id);
+      const updateApartment = await this.apartmentRepository.findOneOrFail({
+        where: { maCanHo: id },
+      });
       //Then updateDTO
       await this.apartmentRepository.save({
         ...updateApartment,
@@ -154,9 +146,11 @@ export class ApartmentService {
         soLuongKhach: updateApartmentDto.soLuongKhach,
         soLuongCon: updateApartmentDto.soLuongCon,
         moTa: updateApartmentDto.moTa,
+        thongTinGiuong: updateApartmentDto.thongTinGiuong,
       });
       //Update Images
-      await this.apartmentImageRepository.delete({ canHo: id });
+      const manager = getManager();
+      await manager.query(`delete from HinhAnhCanHo where MaCanHo = '${id}' `);
       //Add new Images
       const getImages = updateApartmentDto.hinhAnh;
       for (let i = 0; i < getImages.length; i++) {
@@ -167,31 +161,30 @@ export class ApartmentService {
         newImage.canHo = updateApartment;
         await this.apartmentImageRepository.save(newImage);
       }
-      const findAndReturn = await this.apartmentRepository.findOneOrFail(id);
-      const convenientQuery = await convenientQueryByID(
-        findAndReturn.maCanHo,
-        findAndReturn.maBct,
-      );
+      const findAndReturn = await this.apartmentRepository.findOneOrFail({
+        where: { maCanHo: id },
+      });
+      const convenientQuery = await convenientQueryByID(findAndReturn.maCanHo);
       findAndReturn.tienNghiCanHo = convenientQuery;
       return findAndReturn;
     } catch (err) {
       throw err;
     }
   }
-  async remove(id: GetOneApartmentDto): Promise<Apartment> {
+  async remove(id: string): Promise<Apartment> {
     try {
       //delete convenient
       const manager = getManager();
       await manager.query(`delete
       from CanHo_TienNghiCanHo
-      where MaCanHo = '${id.maCanHo}' 
-      and MaBCT = '${id.maBct}' `);
+      where MaCanHo = '${id}' `);
       // delete Images
-      await this.apartmentImageRepository.delete({
-        canHo: id,
-      });
+      await manager.query(`delete from HinhAnhCanHo where MaCanHo = '${id}' `);
+
       //Delete apartment
-      const findOne = await this.apartmentRepository.findOneOrFail(id);
+      const findOne = await this.apartmentRepository.findOneOrFail({
+        where: { maCanHo: id },
+      });
       return await this.apartmentRepository.remove(findOne);
     } catch (err) {
       throw err;

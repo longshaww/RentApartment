@@ -15,4 +15,6 @@ export class UpdateApartmentDTO {
   hinhAnh: string[];
   @ApiProperty()
   moTa: string | null;
+  @ApiProperty()
+  thongTinGiuong: string;
 }
