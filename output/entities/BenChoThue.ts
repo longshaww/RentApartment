@@ -36,7 +36,7 @@ export class BenChoThue {
   @Column('ntext', { name: 'MoTa', nullable: true })
   moTa: string | null;
 
-  @Column('nvarchar', { name: 'DiemTienNghi', nullable: true })
+  @Column('nvarchar', { name: 'DiemTienNghi' })
   diemTienNghi: number;
 
   @ManyToOne(() => LoaILuuTru, (loaILuuTru) => loaILuuTru.benChoThues)
