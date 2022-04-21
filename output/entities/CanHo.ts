@@ -38,6 +38,9 @@ export class CanHo {
   @Column('int', { name: 'SoLuongCon' })
   soLuongCon: number;
 
+  @Column('nvarchar', { name: 'ThongTinGiuong' })
+  thongTinGiuong: string;
+
   @ManyToOne(() => BenChoThue, (benChoThue) => benChoThue.canHos)
   @JoinColumn([{ name: 'MaBCT', referencedColumnName: 'maBct' }])
   maBct2: BenChoThue;

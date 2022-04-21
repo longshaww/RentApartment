@@ -1,6 +1,6 @@
 const LessorRelations = [
   'maLoaiLuuTru',
-  // 'tienNghiBenChoThues',
+  'canHos.hinhAnhCanHos',
   'canHos',
   'hinhAnhBcts',
 ];

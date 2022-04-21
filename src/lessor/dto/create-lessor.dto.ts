@@ -20,4 +20,6 @@ export class CreateLessorDto {
   hinhAnh: string[];
   @ApiProperty()
   maLuuTru: string;
+  @ApiProperty()
+  diemTienNghi: number;
 }

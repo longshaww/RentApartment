@@ -25,15 +25,6 @@ import { CanHo as Apartment } from '../../output/entities/CanHo';
 import { UpdateApartmentDTO } from './dto/update-apartment.dto';
 import { CreateApartmentDto } from './dto/create-apartment.dto';
 
-function handleParam(id) {
-  const handleParam = id.split('-');
-  const obj = {
-    maCanHo: handleParam[0],
-    maBct: handleParam[1],
-  };
-  return obj;
-}
-
 @ApiTags('Apartment')
 @Controller('apartment')
 export class ApartmentController {
@@ -63,8 +54,7 @@ export class ApartmentController {
   @ApiOkResponse({ type: Apartment })
   @ApiNotFoundResponse()
   async getOneById(@Param('id') id: string): Promise<Apartment> {
-    const param = handleParam(id);
-    const apartment = this.apartmentsService.getOneById(param);
+    const apartment = this.apartmentsService.getOneById(id);
     if (!apartment) {
       throw new NotFoundException();
     }
@@ -78,11 +68,10 @@ export class ApartmentController {
     @Param('id') id: string,
     @Body() updateApartmentDto: UpdateApartmentDTO,
   ) {
-    const param = handleParam(id);
     if (!Param || !Body) {
       throw new HttpException('Bad Request', HttpStatus.BAD_REQUEST);
     }
-    return this.apartmentsService.update(param, updateApartmentDto);
+    return this.apartmentsService.update(id, updateApartmentDto);
   }
 
   @Delete(':id')
@@ -92,7 +81,6 @@ export class ApartmentController {
     if (!Param) {
       throw new HttpException('Bad Request', HttpStatus.BAD_REQUEST);
     }
-    const param = handleParam(id);
-    return this.apartmentsService.remove(param);
+    return this.apartmentsService.remove(id);
   }
 }
