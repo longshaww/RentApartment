@@ -67,7 +67,19 @@ export class LessorService {
       }); // SELECT * FROM lessor WHERE lessor.id = id
 
       const convenientQuery = await convenientQueryByID(id);
+      const manager = getManager();
+
       lessor.tienNghiBCT = convenientQuery;
+      const apartment = lessor.canHos;
+      for (let i = 0; i < apartment.length; i++) {
+        const queryApartmentConvient =
+          await manager.query(`select MaTienNghiCanHo, TenTienNghiCanHo
+                            from TienNghiCanHo
+                            where exists  
+                            (select MaCanHo,MaBCT from CanHo_TienNghiCanHo
+                            where CanHo_TienNghiCanHo.MaCanHo = '${apartment[i].maCanHo}')`);
+        apartment[i].tienNghiCanHo = queryApartmentConvient;
+      }
       return lessor;
     } catch (err) {
       throw err;
