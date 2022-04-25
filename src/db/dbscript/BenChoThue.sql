@@ -1,0 +1,3 @@
+INSERT INTO apartment.dbo.BenChoThue (MaBCT,TenBCT,DiaChi,GiaTrungBinh,SoSao,LuotDanhGia,MoTa,MaLoaiLuuTru,DiemTienLoi) VALUES
+	 (N'BCT1',N'Queen central Apartment-Hotel ',N'10AB Thái Văn Lung, Phường Bến Nghé, Bến Nghé, Quận 1, Thành phố Hồ Chí Minh, Việt Nam, 710205',637.5,2,58,N'Queen central Apartment-Hotel là đề xuất hàng đầu dành cho những tín đồ du lịch "bụi" mong muốn được nghỉ tại một nơi nghỉ vừa thoải mái lại hợp túi tiền.',N'LLT1',7.2),
+	 (N'BCT2',N'Amanaki Saigon - Office & Apartment ',N'Quận 2',2346.0,4,23,N'Dù quý khách muốn tổ chức một sự kiện hay các dịp kỷ niệm đặc biệt khác, Amanaki Saigon - Office & Apartment là lựa chọn tuyệt vời cho quý khách với phòng chức năng rộng lớn, được trang bị đầy đủ để sẵn sàng đáp ứng mọi yêu cầu.',N'LLT1',9.0);

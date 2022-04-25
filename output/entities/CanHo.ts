@@ -9,9 +9,10 @@ import {
 import { BenChoThue } from './BenChoThue';
 import { CanHoTienNghiCanHo } from './CanHoTienNghiCanHo';
 import { HinhAnhCanHo } from './HinhAnhCanHo';
+import { NgayDaDat } from './NgayDaDat';
 import { PhieuDatPhong } from './PhieuDatPhong';
 
-@Index('PK__CanHo__E3568236D5994D96', ['maCanHo', 'maBct'], { unique: true })
+@Index('PK__CanHo__E356823688265FA2', ['maCanHo', 'maBct'], { unique: true })
 @Entity('CanHo', { schema: 'dbo' })
 export class CanHo {
   @Column('nvarchar', { primary: true, name: 'MaCanHo', length: 255 })
@@ -38,7 +39,7 @@ export class CanHo {
   @Column('int', { name: 'SoLuongCon' })
   soLuongCon: number;
 
-  @Column('nvarchar', { name: 'ThongTinGiuong' })
+  @Column('nvarchar', { name: 'ThongTinGiuong', length: 255 })
   thongTinGiuong: string;
 
   @ManyToOne(() => BenChoThue, (benChoThue) => benChoThue.canHos)
@@ -54,8 +55,10 @@ export class CanHo {
   @OneToMany(() => HinhAnhCanHo, (hinhAnhCanHo) => hinhAnhCanHo.canHo)
   hinhAnhCanHos: HinhAnhCanHo[];
 
+  @OneToMany(() => NgayDaDat, (ngayDaDat) => ngayDaDat.canHo)
+  ngayDaDats: NgayDaDat[];
+
   @OneToMany(() => PhieuDatPhong, (phieuDatPhong) => phieuDatPhong.canHo)
   phieuDatPhongs: PhieuDatPhong[];
-
   tienNghiCanHo: [];
 }

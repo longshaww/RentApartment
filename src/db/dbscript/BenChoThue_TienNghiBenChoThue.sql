@@ -1,0 +1,126 @@
+INSERT INTO apartment.dbo.BenChoThue_TienNghiBenChoThue (MaBCT,MaTienNghiBCT) VALUES
+	 (N'BCT1',N'TNBCT1'),
+	 (N'BCT1',N'TNBCT10'),
+	 (N'BCT1',N'TNBCT11'),
+	 (N'BCT1',N'TNBCT12'),
+	 (N'BCT1',N'TNBCT13'),
+	 (N'BCT1',N'TNBCT14'),
+	 (N'BCT1',N'TNBCT15'),
+	 (N'BCT1',N'TNBCT16'),
+	 (N'BCT1',N'TNBCT17'),
+	 (N'BCT1',N'TNBCT18');
+INSERT INTO apartment.dbo.BenChoThue_TienNghiBenChoThue (MaBCT,MaTienNghiBCT) VALUES
+	 (N'BCT1',N'TNBCT19'),
+	 (N'BCT1',N'TNBCT2'),
+	 (N'BCT1',N'TNBCT20'),
+	 (N'BCT1',N'TNBCT21'),
+	 (N'BCT1',N'TNBCT22'),
+	 (N'BCT1',N'TNBCT23'),
+	 (N'BCT1',N'TNBCT24'),
+	 (N'BCT1',N'TNBCT25'),
+	 (N'BCT1',N'TNBCT26'),
+	 (N'BCT1',N'TNBCT27');
+INSERT INTO apartment.dbo.BenChoThue_TienNghiBenChoThue (MaBCT,MaTienNghiBCT) VALUES
+	 (N'BCT1',N'TNBCT28'),
+	 (N'BCT1',N'TNBCT29'),
+	 (N'BCT1',N'TNBCT3'),
+	 (N'BCT1',N'TNBCT30'),
+	 (N'BCT1',N'TNBCT31'),
+	 (N'BCT1',N'TNBCT32'),
+	 (N'BCT1',N'TNBCT33'),
+	 (N'BCT1',N'TNBCT34'),
+	 (N'BCT1',N'TNBCT35'),
+	 (N'BCT1',N'TNBCT36');
+INSERT INTO apartment.dbo.BenChoThue_TienNghiBenChoThue (MaBCT,MaTienNghiBCT) VALUES
+	 (N'BCT1',N'TNBCT37'),
+	 (N'BCT1',N'TNBCT38'),
+	 (N'BCT1',N'TNBCT39'),
+	 (N'BCT1',N'TNBCT4'),
+	 (N'BCT1',N'TNBCT40'),
+	 (N'BCT1',N'TNBCT41'),
+	 (N'BCT1',N'TNBCT42'),
+	 (N'BCT1',N'TNBCT43'),
+	 (N'BCT1',N'TNBCT44'),
+	 (N'BCT1',N'TNBCT45');
+INSERT INTO apartment.dbo.BenChoThue_TienNghiBenChoThue (MaBCT,MaTienNghiBCT) VALUES
+	 (N'BCT1',N'TNBCT46'),
+	 (N'BCT1',N'TNBCT47'),
+	 (N'BCT1',N'TNBCT48'),
+	 (N'BCT1',N'TNBCT49'),
+	 (N'BCT1',N'TNBCT5'),
+	 (N'BCT1',N'TNBCT50'),
+	 (N'BCT1',N'TNBCT51'),
+	 (N'BCT1',N'TNBCT52'),
+	 (N'BCT1',N'TNBCT53'),
+	 (N'BCT1',N'TNBCT54');
+INSERT INTO apartment.dbo.BenChoThue_TienNghiBenChoThue (MaBCT,MaTienNghiBCT) VALUES
+	 (N'BCT1',N'TNBCT55'),
+	 (N'BCT1',N'TNBCT56'),
+	 (N'BCT1',N'TNBCT57'),
+	 (N'BCT1',N'TNBCT6'),
+	 (N'BCT1',N'TNBCT7'),
+	 (N'BCT1',N'TNBCT8'),
+	 (N'BCT1',N'TNBCT9'),
+	 (N'BCT2',N'TNBCT1'),
+	 (N'BCT2',N'TNBCT10'),
+	 (N'BCT2',N'TNBCT11');
+INSERT INTO apartment.dbo.BenChoThue_TienNghiBenChoThue (MaBCT,MaTienNghiBCT) VALUES
+	 (N'BCT2',N'TNBCT12'),
+	 (N'BCT2',N'TNBCT13'),
+	 (N'BCT2',N'TNBCT14'),
+	 (N'BCT2',N'TNBCT15'),
+	 (N'BCT2',N'TNBCT16'),
+	 (N'BCT2',N'TNBCT17'),
+	 (N'BCT2',N'TNBCT18'),
+	 (N'BCT2',N'TNBCT19'),
+	 (N'BCT2',N'TNBCT2'),
+	 (N'BCT2',N'TNBCT20');
+INSERT INTO apartment.dbo.BenChoThue_TienNghiBenChoThue (MaBCT,MaTienNghiBCT) VALUES
+	 (N'BCT2',N'TNBCT21'),
+	 (N'BCT2',N'TNBCT22'),
+	 (N'BCT2',N'TNBCT23'),
+	 (N'BCT2',N'TNBCT24'),
+	 (N'BCT2',N'TNBCT25'),
+	 (N'BCT2',N'TNBCT26'),
+	 (N'BCT2',N'TNBCT27'),
+	 (N'BCT2',N'TNBCT28'),
+	 (N'BCT2',N'TNBCT29'),
+	 (N'BCT2',N'TNBCT3');
+INSERT INTO apartment.dbo.BenChoThue_TienNghiBenChoThue (MaBCT,MaTienNghiBCT) VALUES
+	 (N'BCT2',N'TNBCT30'),
+	 (N'BCT2',N'TNBCT31'),
+	 (N'BCT2',N'TNBCT32'),
+	 (N'BCT2',N'TNBCT33'),
+	 (N'BCT2',N'TNBCT34'),
+	 (N'BCT2',N'TNBCT35'),
+	 (N'BCT2',N'TNBCT36'),
+	 (N'BCT2',N'TNBCT37'),
+	 (N'BCT2',N'TNBCT38'),
+	 (N'BCT2',N'TNBCT39');
+INSERT INTO apartment.dbo.BenChoThue_TienNghiBenChoThue (MaBCT,MaTienNghiBCT) VALUES
+	 (N'BCT2',N'TNBCT4'),
+	 (N'BCT2',N'TNBCT40'),
+	 (N'BCT2',N'TNBCT41'),
+	 (N'BCT2',N'TNBCT42'),
+	 (N'BCT2',N'TNBCT43'),
+	 (N'BCT2',N'TNBCT44'),
+	 (N'BCT2',N'TNBCT45'),
+	 (N'BCT2',N'TNBCT46'),
+	 (N'BCT2',N'TNBCT47'),
+	 (N'BCT2',N'TNBCT48');
+INSERT INTO apartment.dbo.BenChoThue_TienNghiBenChoThue (MaBCT,MaTienNghiBCT) VALUES
+	 (N'BCT2',N'TNBCT49'),
+	 (N'BCT2',N'TNBCT5'),
+	 (N'BCT2',N'TNBCT50'),
+	 (N'BCT2',N'TNBCT51'),
+	 (N'BCT2',N'TNBCT52'),
+	 (N'BCT2',N'TNBCT53'),
+	 (N'BCT2',N'TNBCT54'),
+	 (N'BCT2',N'TNBCT55'),
+	 (N'BCT2',N'TNBCT56'),
+	 (N'BCT2',N'TNBCT57');
+INSERT INTO apartment.dbo.BenChoThue_TienNghiBenChoThue (MaBCT,MaTienNghiBCT) VALUES
+	 (N'BCT2',N'TNBCT6'),
+	 (N'BCT2',N'TNBCT7'),
+	 (N'BCT2',N'TNBCT8'),
+	 (N'BCT2',N'TNBCT9');

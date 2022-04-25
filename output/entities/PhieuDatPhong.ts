@@ -11,8 +11,8 @@ import { CanHo } from "./CanHo";
 import { KhachHang } from "./KhachHang";
 
 @Index(
-  "PK__PhieuDat__133948E615C3393D",
-  ["maDatPhong", "maCanHo", "maBct", "maKhachHang"],
+  "PK__PhieuDat__306F64519B0FAD12",
+  ["maDatPhong", "maCanHo", "maKhachHang", "maBct"],
   { unique: true }
 )
 @Entity("PhieuDatPhong", { schema: "dbo" })
@@ -35,11 +35,11 @@ export class PhieuDatPhong {
   @Column("nvarchar", { primary: true, name: "MaCanHo", length: 255 })
   maCanHo: string;
 
-  @Column("nvarchar", { primary: true, name: "MaBCT", length: 255 })
-  maBct: string;
-
   @Column("nvarchar", { primary: true, name: "MaKhachHang", length: 255 })
   maKhachHang: string;
+
+  @Column("nvarchar", { primary: true, name: "MaBCT", length: 255 })
+  maBct: string;
 
   @OneToMany(
     () => ChiTietDatPhong,

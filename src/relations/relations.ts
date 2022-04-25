@@ -1,6 +1,7 @@
 const LessorRelations = [
   'maLoaiLuuTru',
   'canHos.hinhAnhCanHos',
+  'canHos.ngayDaDats',
   'canHos',
   'hinhAnhBcts',
 ];
