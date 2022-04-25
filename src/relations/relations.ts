@@ -7,7 +7,7 @@ const LessorRelations = [
 ];
 
 const ApartmentRelations = [
-  // 'maBct2',
+  'maBct2',
   // 'canHoTienNghiCanHos',
   'hinhAnhCanHos',
   'phieuDatPhongs',
