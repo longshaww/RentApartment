@@ -12,7 +12,6 @@ import { HinhAnhCanHo } from './HinhAnhCanHo';
 import { NgayDaDat } from './NgayDaDat';
 import { PhieuDatPhong } from './PhieuDatPhong';
 
-@Index('PK__CanHo__E356823688265FA2', ['maCanHo', 'maBct'], { unique: true })
 @Entity('CanHo', { schema: 'dbo' })
 export class CanHo {
   @Column('nvarchar', { primary: true, name: 'MaCanHo', length: 255 })

@@ -1,18 +1,17 @@
-import { Column, Entity, Index, OneToMany } from "typeorm";
-import { CanHoTienNghiCanHo } from "./CanHoTienNghiCanHo";
+import { Column, Entity, Index, OneToMany } from 'typeorm';
+import { CanHoTienNghiCanHo } from './CanHoTienNghiCanHo';
 
-@Index("PK__TienNghi__1C11E5334D036B20", ["maTienNghiCanHo"], { unique: true })
-@Entity("TienNghiCanHo", { schema: "dbo" })
+@Entity('TienNghiCanHo', { schema: 'dbo' })
 export class TienNghiCanHo {
-  @Column("nvarchar", { primary: true, name: "MaTienNghiCanHo", length: 255 })
+  @Column('nvarchar', { primary: true, name: 'MaTienNghiCanHo', length: 255 })
   maTienNghiCanHo: string;
 
-  @Column("nvarchar", { name: "TenTienNghiCanHo", length: 255 })
+  @Column('nvarchar', { name: 'TenTienNghiCanHo', length: 255 })
   tenTienNghiCanHo: string;
 
   @OneToMany(
     () => CanHoTienNghiCanHo,
-    (canHoTienNghiCanHo) => canHoTienNghiCanHo.maTienNghiCanHo2
+    (canHoTienNghiCanHo) => canHoTienNghiCanHo.maTienNghiCanHo2,
   )
   canHoTienNghiCanHos: CanHoTienNghiCanHo[];
 }

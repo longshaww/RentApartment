@@ -13,7 +13,6 @@ import { TienNghiBenChoThue } from './TienNghiBenChoThue';
 import { CanHo } from './CanHo';
 import { HinhAnhBct } from './HinhAnhBct';
 
-@Index('PK__BenChoTh__35217F3B0A8000E6', ['maBct'], { unique: true })
 @Entity('BenChoThue', { schema: 'dbo' })
 export class BenChoThue {
   @Column('nvarchar', { primary: true, name: 'MaBCT', length: 255 })
