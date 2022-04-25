@@ -1,7 +1,7 @@
-import { Column, Entity, Index, JoinTable, ManyToMany } from "typeorm";
+import { Column, Entity, Index, ManyToMany } from "typeorm";
 import { BenChoThue } from "./BenChoThue";
 
-@Index("PK__TienNghi__8FD23AC56D89E554", ["maTienNghiBct"], { unique: true })
+@Index("PK__TienNghi__8FD23AC587E368BE", ["maTienNghiBct"], { unique: true })
 @Entity("TienNghiBenChoThue", { schema: "dbo" })
 export class TienNghiBenChoThue {
   @Column("nvarchar", { primary: true, name: "MaTienNghiBCT", length: 255 })
@@ -11,13 +11,5 @@ export class TienNghiBenChoThue {
   tenTienNghiBct: string;
 
   @ManyToMany(() => BenChoThue, (benChoThue) => benChoThue.tienNghiBenChoThues)
-  @JoinTable({
-    name: "BenChoThue_TienNghiBenChoThue",
-    joinColumns: [
-      { name: "MaTienNghiBCT", referencedColumnName: "maTienNghiBct" },
-    ],
-    inverseJoinColumns: [{ name: "MaBCT", referencedColumnName: "maBct" }],
-    schema: "dbo",
-  })
   benChoThues: BenChoThue[];
 }

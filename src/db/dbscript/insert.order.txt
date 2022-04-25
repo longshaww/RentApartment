@@ -1,0 +1,2 @@
+LoaiLuuTru -> BenChoThue -> TienNghiBCT -> BenChoThue_TienNghiBenChoThue -> HinhAnhBCT -> CanHo
+-> TienNghiCanHo -> CanHo_TienNghiCanHo -> HinhAnhCanHo -> KhachHang -> PhieuDatPhong

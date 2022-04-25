@@ -1,0 +1,77 @@
+INSERT INTO apartment.dbo.CanHo_TienNghiCanHo (MaCanHo,MaBCT,MaTienNghiCanHo) VALUES
+	 (N'CH_u14vz8hs',N'BCT2',N'TNCH1'),
+	 (N'CH_u14vz8hs',N'BCT2',N'TNCH11'),
+	 (N'CH_u14vz8hs',N'BCT2',N'TNCH12'),
+	 (N'CH_u14vz8hs',N'BCT2',N'TNCH13'),
+	 (N'CH_u14vz8hs',N'BCT2',N'TNCH14'),
+	 (N'CH_u14vz8hs',N'BCT2',N'TNCH15'),
+	 (N'CH_u14vz8hs',N'BCT2',N'TNCH2'),
+	 (N'CH_u14vz8hs',N'BCT2',N'TNCH3'),
+	 (N'CH_u14vz8hs',N'BCT2',N'TNCH4'),
+	 (N'CH_u14vz8hs',N'BCT2',N'TNCH5');
+INSERT INTO apartment.dbo.CanHo_TienNghiCanHo (MaCanHo,MaBCT,MaTienNghiCanHo) VALUES
+	 (N'CH_u14vz8hs',N'BCT2',N'TNCH6'),
+	 (N'CH_u14vz8hs',N'BCT2',N'TNCH7'),
+	 (N'CH_u14vz8hs',N'BCT2',N'TNCH8'),
+	 (N'CH_u14vz8hs',N'BCT2',N'TNCH9'),
+	 (N'CH1',N'BCT1',N'TNCH1'),
+	 (N'CH1',N'BCT1',N'TNCH11'),
+	 (N'CH1',N'BCT1',N'TNCH12'),
+	 (N'CH1',N'BCT1',N'TNCH13'),
+	 (N'CH1',N'BCT1',N'TNCH14'),
+	 (N'CH1',N'BCT1',N'TNCH15');
+INSERT INTO apartment.dbo.CanHo_TienNghiCanHo (MaCanHo,MaBCT,MaTienNghiCanHo) VALUES
+	 (N'CH1',N'BCT1',N'TNCH2'),
+	 (N'CH1',N'BCT1',N'TNCH3'),
+	 (N'CH1',N'BCT1',N'TNCH4'),
+	 (N'CH1',N'BCT1',N'TNCH5'),
+	 (N'CH1',N'BCT1',N'TNCH6'),
+	 (N'CH1',N'BCT1',N'TNCH7'),
+	 (N'CH1',N'BCT1',N'TNCH8'),
+	 (N'CH1',N'BCT1',N'TNCH9'),
+	 (N'CH2',N'BCT1',N'TNCH1'),
+	 (N'CH2',N'BCT1',N'TNCH11');
+INSERT INTO apartment.dbo.CanHo_TienNghiCanHo (MaCanHo,MaBCT,MaTienNghiCanHo) VALUES
+	 (N'CH2',N'BCT1',N'TNCH12'),
+	 (N'CH2',N'BCT1',N'TNCH13'),
+	 (N'CH2',N'BCT1',N'TNCH14'),
+	 (N'CH2',N'BCT1',N'TNCH15'),
+	 (N'CH2',N'BCT1',N'TNCH2'),
+	 (N'CH2',N'BCT1',N'TNCH3'),
+	 (N'CH2',N'BCT1',N'TNCH4'),
+	 (N'CH2',N'BCT1',N'TNCH5'),
+	 (N'CH2',N'BCT1',N'TNCH6'),
+	 (N'CH2',N'BCT1',N'TNCH7');
+INSERT INTO apartment.dbo.CanHo_TienNghiCanHo (MaCanHo,MaBCT,MaTienNghiCanHo) VALUES
+	 (N'CH2',N'BCT1',N'TNCH8'),
+	 (N'CH2',N'BCT1',N'TNCH9'),
+	 (N'CH3',N'BCT1',N'TNCH1'),
+	 (N'CH3',N'BCT1',N'TNCH11'),
+	 (N'CH3',N'BCT1',N'TNCH12'),
+	 (N'CH3',N'BCT1',N'TNCH13'),
+	 (N'CH3',N'BCT1',N'TNCH14'),
+	 (N'CH3',N'BCT1',N'TNCH15'),
+	 (N'CH3',N'BCT1',N'TNCH2'),
+	 (N'CH3',N'BCT1',N'TNCH3');
+INSERT INTO apartment.dbo.CanHo_TienNghiCanHo (MaCanHo,MaBCT,MaTienNghiCanHo) VALUES
+	 (N'CH3',N'BCT1',N'TNCH4'),
+	 (N'CH3',N'BCT1',N'TNCH5'),
+	 (N'CH3',N'BCT1',N'TNCH6'),
+	 (N'CH3',N'BCT1',N'TNCH7'),
+	 (N'CH3',N'BCT1',N'TNCH8'),
+	 (N'CH3',N'BCT1',N'TNCH9'),
+	 (N'CH4',N'BCT1',N'TNCH1'),
+	 (N'CH4',N'BCT1',N'TNCH11'),
+	 (N'CH4',N'BCT1',N'TNCH12'),
+	 (N'CH4',N'BCT1',N'TNCH13');
+INSERT INTO apartment.dbo.CanHo_TienNghiCanHo (MaCanHo,MaBCT,MaTienNghiCanHo) VALUES
+	 (N'CH4',N'BCT1',N'TNCH14'),
+	 (N'CH4',N'BCT1',N'TNCH15'),
+	 (N'CH4',N'BCT1',N'TNCH2'),
+	 (N'CH4',N'BCT1',N'TNCH3'),
+	 (N'CH4',N'BCT1',N'TNCH4'),
+	 (N'CH4',N'BCT1',N'TNCH5'),
+	 (N'CH4',N'BCT1',N'TNCH6'),
+	 (N'CH4',N'BCT1',N'TNCH7'),
+	 (N'CH4',N'BCT1',N'TNCH8'),
+	 (N'CH4',N'BCT1',N'TNCH9');

@@ -3,6 +3,7 @@ import {
   Entity,
   Index,
   JoinColumn,
+  JoinTable,
   ManyToMany,
   ManyToOne,
   OneToMany,
@@ -12,7 +13,7 @@ import { TienNghiBenChoThue } from './TienNghiBenChoThue';
 import { CanHo } from './CanHo';
 import { HinhAnhBct } from './HinhAnhBct';
 
-@Index('PK__BenChoTh__35217F3B8F2111AB', ['maBct'], { unique: true })
+@Index('PK__BenChoTh__35217F3B0A8000E6', ['maBct'], { unique: true })
 @Entity('BenChoThue', { schema: 'dbo' })
 export class BenChoThue {
   @Column('nvarchar', { primary: true, name: 'MaBCT', length: 255 })
@@ -36,8 +37,8 @@ export class BenChoThue {
   @Column('ntext', { name: 'MoTa', nullable: true })
   moTa: string | null;
 
-  @Column('float', { name: 'DiemTienNghi' })
-  diemTienNghi: number;
+  @Column('float', { name: 'DiemTienLoi', precision: 53 })
+  diemTienLoi: number;
 
   @ManyToOne(() => LoaILuuTru, (loaILuuTru) => loaILuuTru.benChoThues)
   @JoinColumn([{ name: 'MaLoaiLuuTru', referencedColumnName: 'maLoaiLuuTru' }])
@@ -47,6 +48,14 @@ export class BenChoThue {
     () => TienNghiBenChoThue,
     (tienNghiBenChoThue) => tienNghiBenChoThue.benChoThues,
   )
+  @JoinTable({
+    name: 'BenChoThue_TienNghiBenChoThue',
+    joinColumns: [{ name: 'MaBCT', referencedColumnName: 'maBct' }],
+    inverseJoinColumns: [
+      { name: 'MaTienNghiBCT', referencedColumnName: 'maTienNghiBct' },
+    ],
+    schema: 'dbo',
+  })
   tienNghiBenChoThues: TienNghiBenChoThue[];
 
   @OneToMany(() => CanHo, (canHo) => canHo.maBct2)

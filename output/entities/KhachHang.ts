@@ -1,7 +1,7 @@
 import { Column, Entity, Index, OneToMany } from "typeorm";
 import { PhieuDatPhong } from "./PhieuDatPhong";
 
-@Index("PK__KhachHan__88D2F0E57A2C812F", ["maKhachHang"], { unique: true })
+@Index("PK__KhachHan__88D2F0E586C876B8", ["maKhachHang"], { unique: true })
 @Entity("KhachHang", { schema: "dbo" })
 export class KhachHang {
   @Column("nvarchar", { primary: true, name: "MaKhachHang", length: 255 })

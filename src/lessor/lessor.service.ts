@@ -34,12 +34,13 @@ export class LessorService {
 
   async getAll(tenBct: string): Promise<Lessor[]> {
     if (tenBct) {
-      return await this.lessorRepository.find({
+      const getAll = await this.lessorRepository.find({
         relations,
-        where: {
-          tenBct: tenBct,
-        },
       });
+      const filter = getAll.filter((item) => {
+        return item.tenBct.toLowerCase().indexOf(tenBct.toLowerCase()) !== -1;
+      });
+      return filter;
     }
     const manager = getManager();
     const convenientQuery = await manager.query(`

@@ -1,0 +1,2 @@
+INSERT INTO apartment.dbo.ChiTietDatPhong (MaChiTietDatPhong,MaCanHo,MaBCT,MaDatPhong,MaKhachHang,TongTienCanHo,SoLuongCanHo,ThoiGianNhan,ThoiGianTra) VALUES
+	 (N'CTDPf0CPB4fd_',N'CH2',N'BCT1',N'DPGfXEFW9b8e',N'KH9mWLAH1xt',600.0,1,'2022-04-19 02:15:55.0','2022-04-19 02:15:55.0');

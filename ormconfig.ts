@@ -10,7 +10,7 @@ const config: SqlServerConnectionOptions = {
   database: 'apartment',
   // entities: ['dist/src/**/*.entity.js'],
   entities: ['dist/output/entities/*js'],
-  synchronize: true,
+  synchronize: false,
   migrations: ['dist/src/db/migrations/*js'],
   cli: {
     migrationsDir: 'src/db/migrations',
