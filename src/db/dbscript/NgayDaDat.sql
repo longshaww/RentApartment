@@ -1,0 +1,3 @@
+INSERT INTO apartment.dbo.NgayDaDat (MaNgayDaDat,MaCanHo,MaBCT,NgayCheckIn,NgayCheckOut) VALUES
+	 (N'NDD1',N'CH1',N'BCT1','2022-04-26 00:00:00.0','2022-04-28 00:00:00.0'),
+	 (N'NDD1',N'CH2',N'BCT1','2022-04-26 00:00:00.0','2022-04-28 00:00:00.0');

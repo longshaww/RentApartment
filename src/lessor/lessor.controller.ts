@@ -26,11 +26,21 @@ export class LessorController {
   constructor(private readonly lessorService: LessorService) {}
 
   @ApiQuery({ name: 'tenBct', required: false })
+  @ApiQuery({ name: 'ngayCheckIn', required: false })
+  @ApiQuery({ name: 'ngayCheckOut', required: false })
   @ApiOkResponse({ type: Lessor, isArray: true })
   @ApiNotFoundResponse()
   @Get()
-  async getAll(@Query('tenBct') tenBct?: string): Promise<Lessor[]> {
-    const lessors = this.lessorService.getAll(tenBct);
+  async getAll(
+    @Query('tenBct') tenBct?: string,
+    @Query('ngayCheckIn') ngayCheckIn?: Date,
+    @Query('ngayCheckOut') ngayCheckOut?: Date,
+  ): Promise<Lessor[]> {
+    const lessors = this.lessorService.getAll(
+      tenBct,
+      ngayCheckIn,
+      ngayCheckOut,
+    );
     if (!lessors) {
       throw new NotFoundException();
     }
