@@ -8,6 +8,8 @@ import { getManager, Repository } from 'typeorm';
 import { LessorRelations as relations } from 'src/relations/relations';
 import { CreateLessorDto } from './dto/create-lessor.dto';
 import { UpdateLessorDto } from './dto/update-lessor.dto';
+import * as moment from 'moment';
+import { NgayDaDat } from '../../output/entities/NgayDaDat';
 
 const shortid = require('shortid');
 
@@ -32,15 +34,21 @@ export class LessorService {
     private lessorCovenientRepository: Repository<LessorCovenient>,
   ) {}
 
-  async getAll(tenBct: string): Promise<Lessor[]> {
+  async getAll(
+    tenBct: string,
+    ngayCheckIn: Date,
+    ngayCheckOut: Date,
+  ): Promise<Lessor[]> {
     if (tenBct) {
       const getAll = await this.lessorRepository.find({
         relations,
       });
-      const filter = getAll.filter((item) => {
+      //filter by name
+      const filterByName = getAll.filter((item) => {
         return item.tenBct.toLowerCase().indexOf(tenBct.toLowerCase()) !== -1;
       });
-      return filter;
+
+      return filterByName;
     }
     const manager = getManager();
     const convenientQuery = await manager.query(`

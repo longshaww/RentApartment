@@ -6,8 +6,11 @@ export class NgayDaDat {
   @Column('nvarchar', { primary: true, name: 'MaNgayDaDat', length: 255 })
   maNgayDaDat: string;
 
-  @Column('datetime', { name: 'NgayDat' })
-  ngayDat: Date;
+  @Column('datetime', { name: 'NgayCheckIn' })
+  ngayCheckIn: Date;
+
+  @Column('datetime', { name: 'NgayCheckOut' })
+  ngayCheckOut: Date;
 
   @Column('nvarchar', { primary: true, name: 'MaCanHo', length: 255 })
   maCanHo: string;
