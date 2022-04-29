@@ -61,7 +61,7 @@ export class BillService {
     });
     await this.apartmentRepository.save({
       ...modifyApartment,
-      soLuongCon: modifyApartment.soLuongCon - 1,
+      soLuongCon: modifyApartment.soLuongCon - createBillDto.soLuongCanHo,
     });
 
     //NgayDaDat

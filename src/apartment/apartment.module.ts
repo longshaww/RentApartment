@@ -6,6 +6,7 @@ import { CanHo as Apartment } from 'output/entities/CanHo';
 import { HinhAnhCanHo as ApartmentImage } from 'output/entities/HinhAnhCanHo';
 import { TienNghiCanHo as ApartmentCovenient } from 'output/entities/TienNghiCanHo';
 import { CanHoTienNghiCanHo as ApartmentXApartmentCovenient } from 'output/entities/CanHoTienNghiCanHo';
+import { ChiTietDatPhong } from 'output/entities/ChiTietDatPhong';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { CanHoTienNghiCanHo as ApartmentXApartmentCovenient } from 'output/entit
       ApartmentImage,
       ApartmentCovenient,
       ApartmentXApartmentCovenient,
+      ChiTietDatPhong,
     ]),
   ],
   controllers: [ApartmentController],
