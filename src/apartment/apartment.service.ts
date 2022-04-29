@@ -75,7 +75,7 @@ export class ApartmentService {
     }
   }
 
-  async getAll(tenCanHo: string): Promise<Apartment[]> {
+  async getAll(maBct: string): Promise<Apartment[]> {
     //Get Convenient
     const manager = getManager();
 
@@ -89,11 +89,11 @@ export class ApartmentService {
     const selectNameCovenient = convenientQuery.map((item: any) => {
       return item.TenTienNghiCanHo;
     });
-    if (tenCanHo) {
+    if (maBct) {
       const findByName = await this.apartmentRepository.find({
         relations,
         where: {
-          tenCanHo: tenCanHo,
+          maBct: maBct,
         },
       });
       const customize = findByName.map((item) => {

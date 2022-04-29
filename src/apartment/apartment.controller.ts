@@ -37,13 +37,13 @@ export class ApartmentController {
     return this.apartmentsService.create(createApartmentDto);
   }
 
-  @ApiQuery({ name: 'tenCanHo', required: false })
+  @ApiQuery({ name: 'maBct', required: false })
   @ApiOkResponse({ type: Apartment, isArray: true })
   @ApiNotFoundResponse()
   @Get()
-  async getAll(@Query('tenCanHo') tenCanHo?: string): Promise<Apartment[]> {
+  async getAll(@Query('maBct') maBct?: string): Promise<Apartment[]> {
     // Advanced Search
-    const apartments = this.apartmentsService.getAll(tenCanHo);
+    const apartments = this.apartmentsService.getAll(maBct);
     if (!apartments) {
       throw new HttpException('Bad Request', HttpStatus.BAD_REQUEST);
     }

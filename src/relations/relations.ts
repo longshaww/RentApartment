@@ -1,16 +1,18 @@
 const LessorRelations = [
   'maLoaiLuuTru',
-  'canHos.hinhAnhCanHos',
-  'canHos.ngayDaDats',
-  'canHos',
+  // 'canHos.hinhAnhCanHos',
+  // 'canHos',
   'hinhAnhBcts',
 ];
 
 const ApartmentRelations = [
   'maBct2',
-  // 'canHoTienNghiCanHos',
+  // 'ngayDaDats',
   'hinhAnhCanHos',
   'phieuDatPhongs',
+  'phieuDatPhongs.chiTietDatPhongs',
 ];
 
-export { LessorRelations, ApartmentRelations };
+const BookedDateRelation = ['canHo'];
+
+export { LessorRelations, ApartmentRelations, BookedDateRelation };
