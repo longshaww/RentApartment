@@ -41,6 +41,9 @@ export class CanHo {
   @Column('nvarchar', { name: 'ThongTinGiuong', length: 255 })
   thongTinGiuong: string;
 
+  @Column('datetime', { name: 'ThoiGianCapNhat', nullable: true })
+  thoiGianCapNhat: Date;
+
   @ManyToOne(() => BenChoThue, (benChoThue) => benChoThue.canHos)
   @JoinColumn([{ name: 'MaBCT', referencedColumnName: 'maBct' }])
   maBct2: BenChoThue;

@@ -6,8 +6,11 @@ import { CanHoTienNghiCanHo as ApartmentXApartmentCovenient } from 'output/entit
 import { InjectRepository } from '@nestjs/typeorm';
 import { getManager, Repository } from 'typeorm';
 import { ApartmentRelations as relations } from '../relations/relations';
+import { ChiTietDatPhong as BillDetail } from 'output/entities/ChiTietDatPhong';
 import { UpdateApartmentDTO } from './dto/update-apartment.dto';
 import { CreateApartmentDto } from './dto/create-apartment.dto';
+import * as moment from 'moment';
+
 const shortid = require('shortid');
 
 async function convenientQueryByID(maCanHo) {
@@ -31,6 +34,8 @@ export class ApartmentService {
     private apartmentCovenientRepository: Repository<ApartmentCovenient>,
     @InjectRepository(ApartmentXApartmentCovenient)
     private ApartmentXApartmentCovenientRepository: Repository<ApartmentXApartmentCovenient>,
+    @InjectRepository(BillDetail)
+    private billDetailRepository: Repository<BillDetail>,
   ) {}
 
   async create(createApartmentDto: CreateApartmentDto): Promise<Apartment> {
@@ -96,6 +101,40 @@ export class ApartmentService {
           maBct: maBct,
         },
       });
+
+      const billDetail = await this.billDetailRepository.find();
+      const currentDay = moment(new Date(), 'YYYY-MM-DD');
+
+      for (let i = 0; i < billDetail.length; i++) {
+        if (
+          moment(currentDay).isSame(
+            moment(billDetail[i].thoiGianTra, 'YYYY-MM-DD'),
+            'day',
+          )
+        ) {
+          const thisApartment = await this.apartmentRepository.findOneOrFail({
+            where: {
+              maCanHo: billDetail[i].maCanHo,
+            },
+          });
+          if (
+            moment(currentDay).isSame(
+              moment(thisApartment.thoiGianCapNhat),
+              'day',
+            )
+          ) {
+            return findByName;
+          }
+
+          await this.apartmentRepository.save({
+            ...thisApartment,
+            soLuongCon: thisApartment.soLuongCon + billDetail[i].soLuongCanHo,
+            thoiGianCapNhat: new Date(),
+          });
+        }
+        return findByName;
+      }
+
       const customize = findByName.map((item) => {
         item.tienNghiCanHo = selectNameCovenient;
         return item;
