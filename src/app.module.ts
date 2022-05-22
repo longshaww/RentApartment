@@ -10,6 +10,7 @@ import { BookedDateModule } from './booked-date/booked-date.module';
 import { ConfigModule } from '@nestjs/config';
 import * as Joi from 'joi';
 import { JwtStrategy } from './auth/jwt.strategy';
+import { StripeModule } from './payment/stripe.module';
 
 @Module({
   imports: [
@@ -18,7 +19,9 @@ import { JwtStrategy } from './auth/jwt.strategy';
     TypeOrmModule.forRoot(config),
     BillModule,
     BookedDateModule,
+    StripeModule,
     ConfigModule.forRoot({
+      isGlobal: true,
       validationSchema: Joi.object({
         STRIPE_SECRET_KEY: Joi.string(),
         STRIPE_CURRENCY: Joi.string(),

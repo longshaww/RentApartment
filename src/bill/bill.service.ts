@@ -6,10 +6,14 @@ import { KhachHang as Customer } from '../../output/entities/KhachHang';
 import { PhieuDatPhong as Bill } from '../../output/entities/PhieuDatPhong';
 import { ChiTietDatPhong as BillDetail } from '../../output/entities/ChiTietDatPhong';
 import { InjectRepository } from '@nestjs/typeorm';
+import { ConfigService } from '@nestjs/config';
+import Stripe from 'stripe';
 const shortid = require('shortid');
 
 @Injectable()
 export class BillService {
+  private stripe: Stripe;
+
   constructor(
     @InjectRepository(Bill)
     private billRepository: Repository<Bill>,
@@ -19,7 +23,24 @@ export class BillService {
     private customerRepository: Repository<Customer>,
     @InjectRepository(Apartment)
     private apartmentRepository: Repository<Apartment>,
-  ) {}
+    private configService: ConfigService,
+  ) {
+    this.stripe = new Stripe(configService.get('STRIPE_SECRET_KEY'), {
+      apiVersion: '2020-08-27',
+    });
+  }
+
+  async charge(amount: number, customerId: string) {
+    const paymentIntent = await this.stripe.paymentIntents.create({
+      amount,
+      customer: customerId,
+      automatic_payment_methods: {
+        enabled: true,
+      },
+      currency: this.configService.get('STRIPE_CURRENCY'),
+    });
+    return paymentIntent.client_secret;
+  }
 
   async create(createBillDto: CreateBillDto): Promise<Bill> {
     //create new customer
