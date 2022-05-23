@@ -1,12 +1,20 @@
-import { Controller, Get, UseGuards } from '@nestjs/common';
+import { Controller, Get, SetMetadata } from '@nestjs/common';
 import { AppService } from './app.service';
-import { JwtAuthGuard } from './auth/jwt-auth.guard';
+
+const AllowUnauthorizedRequest = () =>
+  SetMetadata('allowUnauthorizedRequest', true);
+
 @Controller()
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
-  @Get()
-  @UseGuards(JwtAuthGuard)
+  @Get('my-unauthorized-path')
+  @AllowUnauthorizedRequest()
+  myHandler() {
+    return { unauthorized: true };
+  }
+
+  @Get('hello')
   getHello(): string {
     return this.appService.getHello();
   }

@@ -21,5 +21,5 @@ export class CreateLessorDto {
   @ApiProperty()
   maLuuTru: string;
   @ApiProperty()
-  diemTienNghi: number;
+  diemTienLoi: number;
 }
