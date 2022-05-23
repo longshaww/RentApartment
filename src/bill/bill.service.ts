@@ -8,6 +8,7 @@ import { ChiTietDatPhong as BillDetail } from '../../output/entities/ChiTietDatP
 import { InjectRepository } from '@nestjs/typeorm';
 import { ConfigService } from '@nestjs/config';
 import Stripe from 'stripe';
+import { CreatePaymentDto } from './dto/creat-payment.dto';
 const shortid = require('shortid');
 
 @Injectable()
@@ -30,10 +31,15 @@ export class BillService {
     });
   }
 
-  async charge(amount: number, customerId: string) {
+  calculateAmount(amount: any) {
+    const toUsd = amount / 23;
+    const total = parseInt(toUsd.toFixed(2).replace('.', ''));
+    return total;
+  }
+  async charge(createPaymentDto: CreatePaymentDto) {
     const paymentIntent = await this.stripe.paymentIntents.create({
-      amount,
-      customer: customerId,
+      amount: this.calculateAmount(createPaymentDto.amount),
+      // customer: createPaymentDto.customerId,
       automatic_payment_methods: {
         enabled: true,
       },

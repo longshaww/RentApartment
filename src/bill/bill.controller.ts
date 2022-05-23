@@ -12,6 +12,7 @@ import { CreateBillDto } from './dto/create-bill.dto';
 import { UpdateBillDto } from './dto/update-bill.dto';
 import { PhieuDatPhong as Bill } from '../../output/entities/PhieuDatPhong';
 import { ApiTags } from '@nestjs/swagger';
+import { CreatePaymentDto } from './dto/creat-payment.dto';
 
 @ApiTags('Bill')
 @Controller('bill')
@@ -21,6 +22,11 @@ export class BillController {
   @Post()
   create(@Body() createBillDto: CreateBillDto) {
     return this.billService.create(createBillDto);
+  }
+
+  @Post('charge')
+  charge(@Body() createPaymentDto: CreatePaymentDto) {
+    return this.billService.charge(createPaymentDto);
   }
 
   @Get()
