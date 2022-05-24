@@ -7,12 +7,13 @@ import { HinhAnhBct as LessorImages } from '../../output/entities/HinhAnhBct';
 import { LoaILuuTru as TypeStay } from '../../output/entities/LoaILuuTru';
 import { TienNghiBenChoThue as LessorCovenient } from '../../output/entities/TienNghiBenChoThue';
 import { MulterModule } from '@nestjs/platform-express';
+import { join } from 'path';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([Lessor, LessorImages, TypeStay, LessorCovenient]),
     MulterModule.register({
-      dest: './upload',
+      dest: join(__dirname, '../..', 'upload'),
     }),
   ],
   controllers: [LessorController],

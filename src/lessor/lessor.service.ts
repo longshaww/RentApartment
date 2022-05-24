@@ -121,7 +121,9 @@ export class LessorService {
       newLessor.tienNghiBenChoThues = addConvenient;
       await this.lessorRepository.save(newLessor);
       //Images
-      const newLessorImage = hinhAnhBcts.map((item) => item.path);
+      const newLessorImage = hinhAnhBcts.map(
+        (item) => `${process.env.BE_HOST_URL}/${item.filename}`,
+      );
       for (let i = 0; i < newLessorImage.length; i++) {
         const newImage = this.lessorImagesRepository.create({
           maHinhAnhBct: `HABCT${shortid.generate()}`,

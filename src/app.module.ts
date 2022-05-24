@@ -10,8 +10,8 @@ import { BookedDateModule } from './booked-date/booked-date.module';
 import { ConfigModule } from '@nestjs/config';
 import * as Joi from 'joi';
 import { JwtStrategy } from './auth/jwt.strategy';
-import { JwtAuthGuard } from './auth/jwt-auth.guard';
-import { APP_GUARD } from '@nestjs/core';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 
 @Module({
   imports: [
@@ -28,6 +28,9 @@ import { APP_GUARD } from '@nestjs/core';
         FRONTEND_URL: Joi.string(),
         // ...
       }),
+    }),
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'upload'),
     }),
   ],
   controllers: [AppController],

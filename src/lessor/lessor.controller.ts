@@ -10,6 +10,7 @@ import {
   Query,
   UploadedFiles,
   UseInterceptors,
+  Req,
 } from '@nestjs/common';
 import { LessorService } from './lessor.service';
 import { CreateLessorDto } from './dto/create-lessor.dto';
