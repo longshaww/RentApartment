@@ -8,6 +8,8 @@ import {
   Delete,
   NotFoundException,
   Query,
+  UploadedFiles,
+  UseInterceptors,
 } from '@nestjs/common';
 import { LessorService } from './lessor.service';
 import { CreateLessorDto } from './dto/create-lessor.dto';
@@ -19,6 +21,7 @@ import {
   ApiQuery,
   ApiTags,
 } from '@nestjs/swagger';
+import { AnyFilesInterceptor } from '@nestjs/platform-express';
 
 @ApiTags('Lessor')
 @Controller('lessor')
@@ -58,14 +61,28 @@ export class LessorController {
     return lessor;
   }
 
+  @Post('upload')
+  @UseInterceptors(AnyFilesInterceptor())
+  uploadFile(@UploadedFiles() files: Array<Express.Multer.File>) {
+    console.log(files);
+  }
+
   @Post()
-  create(@Body() createLessorDto: CreateLessorDto) {
-    return this.lessorService.create(createLessorDto);
+  @UseInterceptors(AnyFilesInterceptor())
+  create(
+    @Body() createLessorDto: CreateLessorDto,
+    @UploadedFiles() hinhAnhBcts: Array<Express.Multer.File>,
+  ) {
+    return this.lessorService.create(createLessorDto, hinhAnhBcts);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateLessorDto: UpdateLessorDto) {
-    return this.lessorService.update(id, updateLessorDto);
+  update(
+    @Param('id') id: string,
+    @Body() updateLessorDto: UpdateLessorDto,
+    hinhAnhBcts: Array<Express.Multer.File>,
+  ) {
+    return this.lessorService.update(id, updateLessorDto, hinhAnhBcts);
   }
 
   @Delete(':id')

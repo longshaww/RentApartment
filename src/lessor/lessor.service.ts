@@ -95,7 +95,10 @@ export class LessorService {
     }
   }
 
-  async create(createLessorDto: CreateLessorDto): Promise<Lessor> {
+  async create(
+    createLessorDto: CreateLessorDto,
+    hinhAnhBcts: Array<Express.Multer.File>,
+  ): Promise<Lessor> {
     try {
       // TypeStay
       const typeStayBody = createLessorDto.maLuuTru;
@@ -103,6 +106,10 @@ export class LessorService {
         typeStayBody,
       );
       const newLessor = this.lessorRepository.create(createLessorDto);
+      newLessor.giaTrungBinh = 0;
+      newLessor.soSao = 0;
+      newLessor.luotDanhGia = 0;
+      newLessor.diemTienLoi = 0;
       newLessor.maBct = `BCT${shortid.generate()}`;
       newLessor.maLoaiLuuTru = typeStay;
       //Convenient
@@ -114,7 +121,7 @@ export class LessorService {
       newLessor.tienNghiBenChoThues = addConvenient;
       await this.lessorRepository.save(newLessor);
       //Images
-      const newLessorImage = createLessorDto.hinhAnh;
+      const newLessorImage = hinhAnhBcts.map((item) => item.path);
       for (let i = 0; i < newLessorImage.length; i++) {
         const newImage = this.lessorImagesRepository.create({
           maHinhAnhBct: `HABCT${shortid.generate()}`,
@@ -135,7 +142,11 @@ export class LessorService {
     }
   }
 
-  async update(id: string, updateLessorDto: UpdateLessorDto): Promise<Lessor> {
+  async update(
+    id: string,
+    updateLessorDto: UpdateLessorDto,
+    hinhAnhBcts: Array<Express.Multer.File>,
+  ): Promise<Lessor> {
     try {
       const updateLessor = await this.lessorRepository.findOneOrFail(id);
       //TypeStay update
@@ -158,7 +169,7 @@ export class LessorService {
       // Delete all Images
       await this.lessorImagesRepository.delete({ maBct: { maBct: id } });
       //Add new Images
-      const getImages = updateLessorDto.hinhAnh;
+      const getImages = hinhAnhBcts.map((item) => item.path);
       for (let i = 0; i < getImages.length; i++) {
         const newImage = this.lessorImagesRepository.create({
           maHinhAnhBct: `HABCT${shortid.generate()}`,

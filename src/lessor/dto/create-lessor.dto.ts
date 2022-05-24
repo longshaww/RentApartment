@@ -17,8 +17,6 @@ export class CreateLessorDto {
   moTa: string | null;
   tienNghiBenChoThues: TienNghiBenChoThue[];
   @ApiProperty()
-  hinhAnh: string[];
-  @ApiProperty()
   maLuuTru: string;
   @ApiProperty()
   diemTienLoi: number;
