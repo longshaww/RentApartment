@@ -25,7 +25,7 @@ import { join } from 'path';
       validationSchema: Joi.object({
         STRIPE_SECRET_KEY: Joi.string(),
         STRIPE_CURRENCY: Joi.string(),
-        FRONTEND_URL: Joi.string(),
+        FE_URL: Joi.string(),
         // ...
       }),
     }),

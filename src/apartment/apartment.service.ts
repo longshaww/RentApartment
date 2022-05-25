@@ -38,9 +38,13 @@ export class ApartmentService {
     private billDetailRepository: Repository<BillDetail>,
   ) {}
 
-  async create(createApartmentDto: CreateApartmentDto): Promise<Apartment> {
+  async create(
+    createApartmentDto: CreateApartmentDto,
+    hinhAnhCanHos: Array<Express.Multer.File>,
+  ): Promise<Apartment> {
     try {
       const newApartment = this.apartmentRepository.create(createApartmentDto);
+      newApartment.soLuongCon = 1;
       newApartment.maCanHo = `CH${shortid.generate()}`;
       await this.apartmentRepository.save(newApartment);
 
@@ -57,7 +61,9 @@ export class ApartmentService {
         await this.ApartmentXApartmentCovenientRepository.save(newCovenient);
       }
       //create new Images
-      const listApartmentImages = createApartmentDto.hinhAnh;
+      const listApartmentImages = hinhAnhCanHos.map(
+        (item) => `${process.env.BE_URL}/${item.filename}`,
+      );
       for (let i = 0; i < listApartmentImages.length; i++) {
         const newImage = this.apartmentImageRepository.create({
           maHinhAnhCanHo: `HACH${shortid.generate()}`,

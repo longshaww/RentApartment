@@ -11,6 +11,8 @@ import {
   HttpException,
   HttpStatus,
   Delete,
+  UseInterceptors,
+  UploadedFiles,
 } from '@nestjs/common';
 import {
   ApiBadRequestResponse,
@@ -24,17 +26,22 @@ import { ApartmentService } from './apartment.service';
 import { CanHo as Apartment } from '../../output/entities/CanHo';
 import { UpdateApartmentDTO } from './dto/update-apartment.dto';
 import { CreateApartmentDto } from './dto/create-apartment.dto';
+import { AnyFilesInterceptor } from '@nestjs/platform-express';
 
 @ApiTags('Apartment')
 @Controller('apartment')
 export class ApartmentController {
   constructor(private apartmentsService: ApartmentService) {}
 
+  @UseInterceptors(AnyFilesInterceptor())
   @Post()
   @ApiCreatedResponse({ type: Apartment })
   @ApiBadRequestResponse()
-  create(@Body() createApartmentDto: CreateApartmentDto) {
-    return this.apartmentsService.create(createApartmentDto);
+  create(
+    @Body() createApartmentDto: CreateApartmentDto,
+    @UploadedFiles() hinhAnhCanHos: Array<Express.Multer.File>,
+  ) {
+    return this.apartmentsService.create(createApartmentDto, hinhAnhCanHos);
   }
 
   @ApiQuery({ name: 'maBct', required: false })

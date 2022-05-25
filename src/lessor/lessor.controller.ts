@@ -62,12 +62,6 @@ export class LessorController {
     return lessor;
   }
 
-  @Post('upload')
-  @UseInterceptors(AnyFilesInterceptor())
-  uploadFile(@UploadedFiles() files: Array<Express.Multer.File>) {
-    console.log(files);
-  }
-
   @Post()
   @UseInterceptors(AnyFilesInterceptor())
   create(

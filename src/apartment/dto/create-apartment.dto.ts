@@ -14,8 +14,6 @@ export class CreateApartmentDto {
   @ApiProperty()
   soLuongCon: number;
   @ApiProperty()
-  hinhAnh: string[];
-  @ApiProperty()
   moTa: string | null;
   @ApiProperty()
   thongTinGiuong: string;
