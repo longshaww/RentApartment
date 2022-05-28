@@ -10,7 +10,7 @@ import {
   Query,
   UploadedFiles,
   UseInterceptors,
-  Req,
+  Res,
 } from '@nestjs/common';
 import { LessorService } from './lessor.service';
 import { CreateLessorDto } from './dto/create-lessor.dto';
@@ -22,6 +22,8 @@ import {
   ApiQuery,
   ApiTags,
 } from '@nestjs/swagger';
+import { Response } from 'express';
+
 import { AnyFilesInterceptor } from '@nestjs/platform-express';
 
 @ApiTags('Lessor')
@@ -64,11 +66,25 @@ export class LessorController {
 
   @Post()
   @UseInterceptors(AnyFilesInterceptor())
-  create(
+  async create(
     @Body() createLessorDto: CreateLessorDto,
     @UploadedFiles() hinhAnhBcts: Array<Express.Multer.File>,
+    @Res() res: Response,
   ) {
-    return this.lessorService.create(createLessorDto, hinhAnhBcts);
+    if (!createLessorDto) {
+      res
+        .status(400)
+        .json({ success: false, message: 'Cannot post without body' });
+    }
+    try {
+      const newLessor = await this.lessorService.create(
+        createLessorDto,
+        hinhAnhBcts,
+      );
+      res.status(201).json({ success: true, body: newLessor });
+    } catch (err) {
+      res.status(400).json({ success: false, message: err });
+    }
   }
 
   @Patch(':id')

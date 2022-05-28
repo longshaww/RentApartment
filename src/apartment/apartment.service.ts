@@ -61,9 +61,7 @@ export class ApartmentService {
         await this.ApartmentXApartmentCovenientRepository.save(newCovenient);
       }
       //create new Images
-      const listApartmentImages = hinhAnhCanHos.map(
-        (item) => `${process.env.BE_URL}/${item.filename}`,
-      );
+      const listApartmentImages = hinhAnhCanHos.map((item) => item.filename);
       for (let i = 0; i < listApartmentImages.length; i++) {
         const newImage = this.apartmentImageRepository.create({
           maHinhAnhCanHo: `HACH${shortid.generate()}`,
@@ -73,13 +71,11 @@ export class ApartmentService {
         await this.apartmentImageRepository.save(newImage);
       }
       const findAndReturn = await this.apartmentRepository.findOneOrFail({
+        relations,
         where: {
           maCanHo: newApartment.maCanHo,
         },
       });
-      const convenientQuery = await convenientQueryByID(findAndReturn.maCanHo);
-
-      findAndReturn.tienNghiCanHo = convenientQuery;
       return findAndReturn;
     } catch (err) {
       throw err;
@@ -176,6 +172,7 @@ export class ApartmentService {
   async update(
     id: string,
     updateApartmentDto: UpdateApartmentDTO,
+    hinhAnhCanHos: Array<Express.Multer.File>,
   ): Promise<Apartment> {
     try {
       //FindOne
@@ -197,7 +194,7 @@ export class ApartmentService {
       const manager = getManager();
       await manager.query(`delete from HinhAnhCanHo where MaCanHo = '${id}' `);
       //Add new Images
-      const getImages = updateApartmentDto.hinhAnh;
+      const getImages = hinhAnhCanHos.map((image) => image.filename);
       for (let i = 0; i < getImages.length; i++) {
         const newImage = this.apartmentImageRepository.create({
           maHinhAnhCanHo: `HABCT${shortid.generate()}`,
@@ -207,10 +204,10 @@ export class ApartmentService {
         await this.apartmentImageRepository.save(newImage);
       }
       const findAndReturn = await this.apartmentRepository.findOneOrFail({
+        relations,
         where: { maCanHo: id },
       });
-      const convenientQuery = await convenientQueryByID(findAndReturn.maCanHo);
-      findAndReturn.tienNghiCanHo = convenientQuery;
+
       return findAndReturn;
     } catch (err) {
       throw err;

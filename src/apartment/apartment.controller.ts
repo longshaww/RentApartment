@@ -13,6 +13,8 @@ import {
   Delete,
   UseInterceptors,
   UploadedFiles,
+  Res,
+  Put,
 } from '@nestjs/common';
 import {
   ApiBadRequestResponse,
@@ -27,6 +29,11 @@ import { CanHo as Apartment } from '../../output/entities/CanHo';
 import { UpdateApartmentDTO } from './dto/update-apartment.dto';
 import { CreateApartmentDto } from './dto/create-apartment.dto';
 import { AnyFilesInterceptor } from '@nestjs/platform-express';
+import { Response } from 'express';
+import {
+  CANNOT_POST_WITHOUT_BODY,
+  CANNOT_POST_WITHOUT_ID,
+} from '../constant/constant';
 
 @ApiTags('Apartment')
 @Controller('apartment')
@@ -37,11 +44,25 @@ export class ApartmentController {
   @Post()
   @ApiCreatedResponse({ type: Apartment })
   @ApiBadRequestResponse()
-  create(
+  async create(
     @Body() createApartmentDto: CreateApartmentDto,
     @UploadedFiles() hinhAnhCanHos: Array<Express.Multer.File>,
+    @Res() res: Response,
   ) {
-    return this.apartmentsService.create(createApartmentDto, hinhAnhCanHos);
+    if (!createApartmentDto) {
+      res
+        .status(400)
+        .json({ success: false, message: CANNOT_POST_WITHOUT_BODY });
+    }
+    try {
+      const newApart = await this.apartmentsService.create(
+        createApartmentDto,
+        hinhAnhCanHos,
+      );
+      res.status(201).json({ success: true, body: newApart });
+    } catch (err) {
+      res.status(400).json({ success: false, message: err });
+    }
   }
 
   @ApiQuery({ name: 'maBct', required: false })
@@ -68,17 +89,35 @@ export class ApartmentController {
     return apartment;
   }
 
-  @Patch(':id')
+  @UseInterceptors(AnyFilesInterceptor())
+  @Put(':id')
   @ApiOkResponse({ type: Apartment })
   @ApiBadRequestResponse()
-  update(
+  async update(
     @Param('id') id: string,
     @Body() updateApartmentDto: UpdateApartmentDTO,
+    @UploadedFiles() hinhAnhCanHos: Array<Express.Multer.File>,
+    @Res() res: Response,
   ) {
-    if (!Param || !Body) {
-      throw new HttpException('Bad Request', HttpStatus.BAD_REQUEST);
+    if (!updateApartmentDto) {
+      res
+        .status(400)
+        .json({ success: false, message: CANNOT_POST_WITHOUT_BODY });
     }
-    return this.apartmentsService.update(id, updateApartmentDto);
+    if (!id) {
+      res.status(400).json({ success: false, message: CANNOT_POST_WITHOUT_ID });
+    }
+
+    try {
+      const newApartment = await this.apartmentsService.update(
+        id,
+        updateApartmentDto,
+        hinhAnhCanHos,
+      );
+      res.status(202).json({ success: true, body: newApartment });
+    } catch (err) {
+      res.status(400).json({ success: false, message: err });
+    }
   }
 
   @Delete(':id')
