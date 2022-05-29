@@ -37,20 +37,9 @@ export class LessorController {
   @ApiOkResponse({ type: Lessor, isArray: true })
   @ApiNotFoundResponse()
   @Get()
-  async getAll(
-    @Query('tenBct') tenBct?: string,
-    @Query('ngayCheckIn') ngayCheckIn?: Date,
-    @Query('ngayCheckOut') ngayCheckOut?: Date,
-  ): Promise<Lessor[]> {
-    const lessors = this.lessorService.getAll(
-      tenBct,
-      ngayCheckIn,
-      ngayCheckOut,
-    );
-    if (!lessors) {
-      throw new NotFoundException();
-    }
-    return lessors;
+  async getAll(@Res() res: Response, @Query('q') q?: string): Promise<void> {
+    const lessors = await this.lessorService.getAll(q);
+    res.status(200).json({ success: true, body: lessors });
   }
 
   @Get(':id')

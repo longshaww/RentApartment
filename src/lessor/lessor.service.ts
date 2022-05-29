@@ -34,18 +34,17 @@ export class LessorService {
     private lessorCovenientRepository: Repository<LessorCovenient>,
   ) {}
 
-  async getAll(
-    tenBct: string,
-    ngayCheckIn: Date,
-    ngayCheckOut: Date,
-  ): Promise<Lessor[]> {
-    if (tenBct) {
+  async getAll(q: string): Promise<Lessor[]> {
+    if (q) {
       const getAll = await this.lessorRepository.find({
         relations,
       });
       //filter by name
       const filterByName = getAll.filter((item) => {
-        return item.tenBct.toLowerCase().indexOf(tenBct.toLowerCase()) !== -1;
+        return (
+          item.tenBct.toLowerCase().indexOf(q.toLowerCase()) !== -1 ||
+          item.diaChi.toLowerCase().indexOf(q.toLowerCase()) !== -1
+        );
       });
 
       return filterByName;
