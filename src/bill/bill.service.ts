@@ -127,21 +127,17 @@ export class BillService {
       }
       const index = diffArr.indexOf(smallest);
       for (let i = 0; i < 7; i++) {
-        days.push(moment(getAll[index].NgayTao).add(i, 'days').format('ll'));
+        days.push(moment(getAll[index].NgayTao).add(i, 'days'));
       }
-      if (ngayTao) {
-        const billByDate = getAll.filter((d: any) =>
-          moment(d.NgayTao).isSame(ngayTao, 'day'),
-        );
-        return { labels: days, bills: billByDate };
-      }
-      const test = getAll.filter(
-        (value, index, self) =>
-          index ===
-          self.findIndex((t) => moment(t.NgayTao).isSame(value.NgayTao, 'day')),
-      );
-      console.log(test);
-      return { labels: days, bills: getAll };
+
+      const result = days.map((d: any) => {
+        return {
+          day: d,
+          bills: getAll.filter((b: any) => moment(b.NgayTao).isSame(d, 'days')),
+        };
+      });
+
+      return result;
     } catch (err) {
       throw err;
     }
