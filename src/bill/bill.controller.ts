@@ -6,13 +6,16 @@ import {
   Patch,
   Param,
   Delete,
+  Res,
+  Query,
 } from '@nestjs/common';
 import { BillService } from './bill.service';
 import { CreateBillDto } from './dto/create-bill.dto';
 import { UpdateBillDto } from './dto/update-bill.dto';
 import { PhieuDatPhong as Bill } from '../../output/entities/PhieuDatPhong';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiQuery, ApiTags } from '@nestjs/swagger';
 import { CreatePaymentDto } from './dto/creat-payment.dto';
+import { Response } from 'express';
 
 @ApiTags('Bill')
 @Controller('bill')
@@ -29,9 +32,11 @@ export class BillController {
     return this.billService.charge(createPaymentDto);
   }
 
+  @ApiQuery({ name: 'ngayTao', required: false })
   @Get()
-  findAll() {
-    return this.billService.findAll();
+  async findAll(@Res() res: Response, @Query('ngayTao') ngayTao?: string) {
+    const bils = await this.billService.findAll(ngayTao);
+    res.status(200).json(bils);
   }
 
   @Get(':id')

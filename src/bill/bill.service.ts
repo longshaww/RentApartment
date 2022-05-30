@@ -9,6 +9,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { ConfigService } from '@nestjs/config';
 import Stripe from 'stripe';
 import { CreatePaymentDto } from './dto/creat-payment.dto';
+import * as moment from 'moment';
 const shortid = require('shortid');
 
 @Injectable()
@@ -96,7 +97,8 @@ export class BillService {
     return billSaved;
   }
 
-  async findAll() {
+  async findAll(ngayTao?: string) {
+    let days = [];
     try {
       const manager = getManager();
       const getAll =
@@ -111,7 +113,35 @@ export class BillService {
 
         getAll[i].khachHang = khachHang[0];
       }
-      return getAll;
+      let diffArr = [];
+      for (let i = 0; i < getAll.length; i++) {
+        var current = getAll[i].NgayTao;
+        const diff = moment(current).diff(moment(), 'days');
+        diffArr.push(diff);
+      }
+      let smallest = diffArr[0];
+      for (var i = 1; i < diffArr.length; i++) {
+        if (diffArr[i] < smallest) {
+          smallest = diffArr[i];
+        }
+      }
+      const index = diffArr.indexOf(smallest);
+      for (let i = 0; i < 7; i++) {
+        days.push(moment(getAll[index].NgayTao).add(i, 'days').format('ll'));
+      }
+      if (ngayTao) {
+        const billByDate = getAll.filter((d: any) =>
+          moment(d.NgayTao).isSame(ngayTao, 'day'),
+        );
+        return { labels: days, bills: billByDate };
+      }
+      const test = getAll.filter(
+        (value, index, self) =>
+          index ===
+          self.findIndex((t) => moment(t.NgayTao).isSame(value.NgayTao, 'day')),
+      );
+      console.log(test);
+      return { labels: days, bills: getAll };
     } catch (err) {
       throw err;
     }
