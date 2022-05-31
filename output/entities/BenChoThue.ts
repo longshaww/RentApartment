@@ -18,6 +18,9 @@ export class BenChoThue {
   @Column('nvarchar', { primary: true, name: 'MaBCT', length: 255 })
   maBct: string;
 
+  @Column('nvarchar', { name: 'MaPartner', length: 255, nullable: true })
+  maPartner: string;
+
   @Column('nvarchar', { name: 'TenBCT', length: 255 })
   tenBct: string;
 

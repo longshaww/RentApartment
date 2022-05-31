@@ -34,11 +34,11 @@ export class LessorService {
     private lessorCovenientRepository: Repository<LessorCovenient>,
   ) {}
 
-  async getAll(q: string): Promise<Lessor[]> {
+  async getAll(q: string, partnerID: string): Promise<Lessor[]> {
+    const getAll = await this.lessorRepository.find({
+      relations,
+    });
     if (q) {
-      const getAll = await this.lessorRepository.find({
-        relations,
-      });
       //filter by name
       const filterByName = getAll.filter((item) => {
         return (
@@ -49,22 +49,24 @@ export class LessorService {
 
       return filterByName;
     }
-    const manager = getManager();
-    const convenientQuery = await manager.query(`
-    select TenTienNghiBCT
-    from TienNghiBenChoThue
-    where EXISTS  (select MaTienNghiBCT,MaBCT from BenChoThue_TienNghiBenChoThue)`);
-    const selectNameCovenient = convenientQuery.map((item: any) => {
-      return item.TenTienNghiBCT;
-    });
-    const getAll = await this.lessorRepository.find({
-      relations,
-    });
-    const customize = getAll.map((item) => {
-      item.tienNghiBCT = selectNameCovenient;
-      return item;
-    });
-    return customize;
+    if (partnerID) {
+      const filterByPartnerID = getAll.filter((item) => {
+        return item.maPartner === partnerID;
+      });
+      return filterByPartnerID;
+    }
+    if (q && partnerID) {
+      const filter = getAll.filter((item) => {
+        return (
+          (item.tenBct.toLowerCase().indexOf(q.toLowerCase()) !== -1 &&
+            item.maPartner === partnerID) ||
+          (item.diaChi.toLowerCase().indexOf(q.toLowerCase()) !== -1 &&
+            item.maPartner === partnerID)
+        );
+      });
+      return filter;
+    }
+    return getAll;
   }
 
   async getOneById(id: string): Promise<Lessor> {

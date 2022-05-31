@@ -31,14 +31,17 @@ import { AnyFilesInterceptor } from '@nestjs/platform-express';
 export class LessorController {
   constructor(private readonly lessorService: LessorService) {}
 
-  @ApiQuery({ name: 'tenBct', required: false })
-  @ApiQuery({ name: 'ngayCheckIn', required: false })
-  @ApiQuery({ name: 'ngayCheckOut', required: false })
+  @ApiQuery({ name: 'q', required: false })
+  @ApiQuery({ name: 'partnerID', required: false })
   @ApiOkResponse({ type: Lessor, isArray: true })
   @ApiNotFoundResponse()
   @Get()
-  async getAll(@Res() res: Response, @Query('q') q?: string): Promise<void> {
-    const lessors = await this.lessorService.getAll(q);
+  async getAll(
+    @Res() res: Response,
+    @Query('q') q?: string,
+    @Query('partnerID') partnerID?: string,
+  ): Promise<void> {
+    const lessors = await this.lessorService.getAll(q, partnerID);
     res.status(200).json({ success: true, body: lessors });
   }
 

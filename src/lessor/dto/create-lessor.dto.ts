@@ -20,4 +20,6 @@ export class CreateLessorDto {
   maLuuTru: string;
   @ApiProperty()
   diemTienLoi: number;
+  @ApiProperty()
+  maPartner: string;
 }
