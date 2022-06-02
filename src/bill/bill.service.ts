@@ -8,6 +8,7 @@ import { ChiTietDatPhong as BillDetail } from '../../output/entities/ChiTietDatP
 import { InjectRepository } from '@nestjs/typeorm';
 import { ConfigService } from '@nestjs/config';
 import Stripe from 'stripe';
+import { BillRelations as relations } from '../relations/relations';
 import { CreatePaymentDto } from './dto/creat-payment.dto';
 import * as moment from 'moment';
 const shortid = require('shortid');
@@ -49,6 +50,20 @@ export class BillService {
     return paymentIntent.client_secret;
   }
 
+  async findAll() {
+    try {
+      const bills = await this.billRepository.find({ relations });
+      // bills.map((bill: any) => {
+      //   bill.canHo = bill.canHo.tenCanHo;
+      //   bill.maBct2 = bill.maBct2.tenBct;
+      //   bill.hinhAnhBcts = bill.maBct2.hinhAnhBcts[0];
+      //   return bill;
+      // });
+      return bills;
+    } catch (err) {
+      throw err;
+    }
+  }
   async create(createBillDto: CreateBillDto): Promise<Bill> {
     //create new customer
     const newCustomer = this.customerRepository.create();
@@ -97,7 +112,7 @@ export class BillService {
     return billSaved;
   }
 
-  async findAll(ngayTao?: string) {
+  async chart() {
     let days = [];
     try {
       const manager = getManager();
@@ -106,13 +121,7 @@ export class BillService {
                   Thue,TongTien,NgayTao,TongTienCanHo,SoLuongCanHo,ThoiGianNhan,ThoiGianTra
                   from PhieuDatPhong
                   inner join ChiTietDatPhong on PhieuDatPhong.MaDatPhong = ChiTietDatPhong.MaDatPhong`);
-      for (let i = 0; i < getAll.length; i++) {
-        const khachHang = await manager.query(`select * 
-                                          from KhachHang
-                                          where KhachHang.MaKhachHang = '${getAll[i].MaKhachHang}'`);
 
-        getAll[i].khachHang = khachHang[0];
-      }
       let diffArr = [];
       for (let i = 0; i < getAll.length; i++) {
         var current = getAll[i].NgayTao;
@@ -131,12 +140,34 @@ export class BillService {
       }
 
       const result = days.map((d: any) => {
+        const filterBills = getAll.filter((b: any) =>
+          moment(b.NgayTao).isSame(d, 'days'),
+        );
         return {
           day: d,
-          bills: getAll.filter((b: any) => moment(b.NgayTao).isSame(d, 'days')),
+          bills: filterBills,
         };
       });
 
+      for (let i = 0; i < result.length; i++) {
+        for (let j = 0; j < result[i].bills.length; j++) {
+          if (result[i].bills.length > 1) {
+            const agg = result[i].bills.reduce(
+              (a: any, b: any) => a.TongTien + b.TongTien,
+            );
+            result[i].bills = agg;
+          } else {
+            const [price] = result[i].bills.map((a: any) => a.TongTien);
+            result[i].bills = price;
+          }
+        }
+      }
+      result.map((r) => {
+        if (r.bills.length === 0) {
+          r.bills = 0;
+        }
+        r.day = moment(r.day).format('ll');
+      });
       return result;
     } catch (err) {
       throw err;

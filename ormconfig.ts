@@ -3,7 +3,7 @@ import { SqlServerConnectionOptions } from 'typeorm/driver/sqlserver/SqlServerCo
 
 const config: SqlServerConnectionOptions = {
   type: 'mssql',
-  host: '95.111.203.4',
+  host: '139.59.104.129',
   port: 1433,
   username: 'sa',
   password: 'Qq123456789',

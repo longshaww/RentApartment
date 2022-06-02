@@ -13,6 +13,18 @@ const ApartmentRelations = [
   'phieuDatPhongs.chiTietDatPhongs',
 ];
 
+const BillRelations = [
+  'canHo',
+  'maKhachHang2',
+  'canHo.maBct2',
+  'canHo.maBct2.hinhAnhBcts',
+];
+
 const BookedDateRelation = ['canHo'];
 
-export { LessorRelations, ApartmentRelations, BookedDateRelation };
+export {
+  LessorRelations,
+  ApartmentRelations,
+  BookedDateRelation,
+  BillRelations,
+};

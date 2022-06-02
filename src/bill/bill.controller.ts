@@ -22,6 +22,12 @@ import { Response } from 'express';
 export class BillController {
   constructor(private readonly billService: BillService) {}
 
+  @Get()
+  async findAll(@Res() res: Response) {
+    const bills = await this.billService.findAll();
+    res.status(200).json(bills);
+  }
+
   @Post()
   create(@Body() createBillDto: CreateBillDto) {
     return this.billService.create(createBillDto);
@@ -32,11 +38,10 @@ export class BillController {
     return this.billService.charge(createPaymentDto);
   }
 
-  @ApiQuery({ name: 'ngayTao', required: false })
-  @Get()
-  async findAll(@Res() res: Response, @Query('ngayTao') ngayTao?: string) {
-    const bils = await this.billService.findAll(ngayTao);
-    res.status(200).json(bils);
+  @Get('chart')
+  async chart(@Res() res: Response) {
+    const bills = await this.billService.chart();
+    res.status(200).json(bills);
   }
 
   @Get(':id')
