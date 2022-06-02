@@ -11,6 +11,7 @@ import {
   UploadedFiles,
   UseInterceptors,
   Res,
+  Put,
 } from '@nestjs/common';
 import { LessorService } from './lessor.service';
 import { CreateLessorDto } from './dto/create-lessor.dto';
@@ -25,6 +26,10 @@ import {
 import { Response } from 'express';
 
 import { AnyFilesInterceptor } from '@nestjs/platform-express';
+import {
+  CANNOT_POST_WITHOUT_BODY,
+  CANNOT_POST_WITHOUT_ID,
+} from 'src/constant/constant';
 
 @ApiTags('Lessor')
 @Controller('lessor')
@@ -66,7 +71,7 @@ export class LessorController {
     if (!createLessorDto) {
       res
         .status(400)
-        .json({ success: false, message: 'Cannot post without body' });
+        .json({ success: false, message: CANNOT_POST_WITHOUT_BODY });
     }
     try {
       const newLessor = await this.lessorService.create(
@@ -79,17 +84,41 @@ export class LessorController {
     }
   }
 
-  @Patch(':id')
-  update(
+  @Put(':id')
+  @UseInterceptors(AnyFilesInterceptor())
+  async update(
     @Param('id') id: string,
     @Body() updateLessorDto: UpdateLessorDto,
-    hinhAnhBcts: Array<Express.Multer.File>,
+    @UploadedFiles() hinhAnhBcts: Array<Express.Multer.File>,
+    @Res() res: Response,
   ) {
-    return this.lessorService.update(id, updateLessorDto, hinhAnhBcts);
+    if (!updateLessorDto) {
+      res
+        .status(400)
+        .json({ success: false, message: CANNOT_POST_WITHOUT_BODY });
+    }
+    try {
+      const updateLessor = await this.lessorService.update(
+        id,
+        updateLessorDto,
+        hinhAnhBcts,
+      );
+      res.status(200).json({ success: true, body: updateLessor });
+    } catch (err) {
+      res.status(400).json({ success: false, message: err });
+    }
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.lessorService.remove(id);
+  async remove(@Param('id') id: string, @Res() res: Response) {
+    if (!id) {
+      res.status(400).json({ success: false, message: CANNOT_POST_WITHOUT_ID });
+    }
+    try {
+      const deleteLessor = await this.lessorService.remove(id);
+      res.status(200).json({ success: true, body: deleteLessor });
+    } catch (err) {
+      res.status(400).json({ success: false, message: err });
+    }
   }
 }

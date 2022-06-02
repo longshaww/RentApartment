@@ -13,14 +13,6 @@ import { NgayDaDat } from '../../output/entities/NgayDaDat';
 
 const shortid = require('shortid');
 
-async function convenientQueryByID(id) {
-  const manager = getManager();
-  return await manager.query(`
-     select TenTienNghiBCT
-      from TienNghiBenChoThue
-      where EXISTS  (select MaTienNghiBCT,MaBCT from BenChoThue_TienNghiBenChoThue
-      where BenChoThue_TienNghiBenChoThue.MaBCT = '${id}')`);
-}
 @Injectable()
 export class LessorService {
   constructor(
@@ -74,22 +66,7 @@ export class LessorService {
       const lessor = await this.lessorRepository.findOneOrFail({
         relations,
         where: { maBct: id },
-      }); // SELECT * FROM lessor WHERE lessor.id = id
-
-      // const convenientQuery = await convenientQueryByID(id);
-      // const manager = getManager();
-
-      // lessor.tienNghiBCT = convenientQuery;
-      // const apartment = lessor.canHos;
-      // for (let i = 0; i < apartment.length; i++) {
-      //   const queryApartmentConvient =
-      //     await manager.query(`select MaTienNghiCanHo, TenTienNghiCanHo
-      //                       from TienNghiCanHo
-      //                       where exists
-      //                       (select MaCanHo,MaBCT from CanHo_TienNghiCanHo
-      //                       where CanHo_TienNghiCanHo.MaCanHo = '${apartment[i].maCanHo}')`);
-      //   apartment[i].tienNghiCanHo = queryApartmentConvient;
-      // }
+      });
       return lessor;
     } catch (err) {
       throw err;
@@ -135,8 +112,6 @@ export class LessorService {
         relations,
         where: { maBct: newLessor.maBct },
       });
-      const convenientQuery = await convenientQueryByID(findAndReturn.maBct);
-      findAndReturn.tienNghiBCT = convenientQuery;
       return findAndReturn;
     } catch (err) {
       throw err;
@@ -160,7 +135,6 @@ export class LessorService {
         ...updateLessor,
         tenBct: updateLessorDto.tenBct,
         diaChi: updateLessorDto.diaChi,
-        giaTrungBinh: updateLessorDto.giaTrungBinh,
         soSao: updateLessorDto.soSao,
         luotDanhGia: updateLessorDto.luotDanhGia,
         moTa: updateLessorDto.moTa,
@@ -183,8 +157,6 @@ export class LessorService {
         relations,
         where: { maBct: id },
       });
-      const convenientQuery = await convenientQueryByID(id);
-      findAndReturn.tienNghiBCT = convenientQuery;
       return findAndReturn;
     } catch (err) {
       throw err;
