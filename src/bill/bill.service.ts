@@ -53,12 +53,21 @@ export class BillService {
   async findAll() {
     try {
       const bills = await this.billRepository.find({ relations });
-      // bills.map((bill: any) => {
-      //   bill.canHo = bill.canHo.tenCanHo;
-      //   bill.maBct2 = bill.maBct2.tenBct;
-      //   bill.hinhAnhBcts = bill.maBct2.hinhAnhBcts[0];
-      //   return bill;
-      // });
+      bills.map((bill: any) => {
+        bill.id = bill.maDatPhong;
+        bill.tenCanHo = bill.canHo.tenCanHo;
+        bill.tenBct = bill.canHo.maBct2.tenBct;
+        bill.hinhAnhBcts = bill.canHo.maBct2.hinhAnhBcts[0].urlImageBct;
+        bill.tenKH = bill.maKhachHang2.ten;
+        delete bill.canHo;
+        delete bill.maKhachHang2;
+        delete bill.thue;
+        delete bill.maKhachHang;
+        delete bill.maDatPhong;
+        delete bill.maCanHo;
+        delete bill.maBct;
+        return bill;
+      });
       return bills;
     } catch (err) {
       throw err;
@@ -80,7 +89,7 @@ export class BillService {
     newBill.thue = createBillDto.thue;
     newBill.tongTien = createBillDto.tongTien;
     newBill.ngayTao = createBillDto.ngayTao;
-    newBill.trangThai = createBillDto.trangThai;
+    newBill.trangThai = true;
     newBill.maCanHo = createBillDto.maCanHo;
     newBill.maBct = createBillDto.maBct;
     newBill.maKhachHang = newCustomer.maKhachHang;
