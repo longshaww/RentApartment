@@ -18,6 +18,7 @@ const BillRelations = [
   'maKhachHang2',
   'canHo.maBct2',
   'canHo.maBct2.hinhAnhBcts',
+  'chiTietDatPhongs',
 ];
 
 const BookedDateRelation = ['canHo'];

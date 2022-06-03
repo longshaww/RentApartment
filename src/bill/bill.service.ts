@@ -59,13 +59,13 @@ export class BillService {
         bill.tenBct = bill.canHo.maBct2.tenBct;
         bill.hinhAnhBcts = bill.canHo.maBct2.hinhAnhBcts[0].urlImageBct;
         bill.tenKH = bill.maKhachHang2.ten;
+        bill.tongTienCanHo = bill.chiTietDatPhongs[0].tongTienCanHo;
+        delete bill.chiTietDatPhongs;
         delete bill.canHo;
         delete bill.maKhachHang2;
-        delete bill.thue;
         delete bill.maKhachHang;
         delete bill.maDatPhong;
         delete bill.maCanHo;
-        delete bill.maBct;
         return bill;
       });
       return bills;
@@ -73,52 +73,59 @@ export class BillService {
       throw err;
     }
   }
-  async create(createBillDto: CreateBillDto): Promise<Bill> {
-    //create new customer
-    const newCustomer = this.customerRepository.create();
-    newCustomer.maKhachHang = `KH${shortid.generate()}`;
-    newCustomer.ten = createBillDto.ten;
-    newCustomer.email = createBillDto.email;
-    newCustomer.sdt = createBillDto.sdt;
-    newCustomer.yeuCau = createBillDto.yeuCau;
-    await this.customerRepository.save(newCustomer);
+  async create(createBillDto: CreateBillDto) {
+    try {
+      //create new customer
+      const newCustomer = this.customerRepository.create({
+        maKhachHang: `KH${shortid.generate()}`,
+        ten: createBillDto.ten,
+        email: createBillDto.email,
+        sdt: createBillDto.sdt,
+        yeuCau: createBillDto.yeuCau,
+      });
+      await this.customerRepository.save(newCustomer);
 
-    //then create newBill
-    const newBill = this.billRepository.create();
-    newBill.maDatPhong = `DP${shortid.generate()}`;
-    newBill.thue = createBillDto.thue;
-    newBill.tongTien = createBillDto.tongTien;
-    newBill.ngayTao = createBillDto.ngayTao;
-    newBill.trangThai = true;
-    newBill.maCanHo = createBillDto.maCanHo;
-    newBill.maBct = createBillDto.maBct;
-    newBill.maKhachHang = newCustomer.maKhachHang;
-    const billSaved = await this.billRepository.save(newBill);
+      //then create newBill
+      const newBill = this.billRepository.create({
+        maDatPhong: `DP${shortid.generate()}`,
+        thue: createBillDto.thue,
+        tongTien: createBillDto.tongTien,
+        ngayTao: createBillDto.ngayTao,
+        trangThai: createBillDto.trangThai,
+        maCanHo: createBillDto.maCanHo,
+        maBct: createBillDto.maBct,
+        maKhachHang: newCustomer.maKhachHang,
+      });
+      await this.billRepository.save(newBill);
 
-    //then create newCTDP;
-    const newBillDetail = this.billDetailRepository.create();
-    newBillDetail.maChiTietDatPhong = `CTDP${shortid.generate()}`;
-    newBillDetail.maCanHo = createBillDto.maCanHo;
-    newBillDetail.maBct = createBillDto.maBct;
-    newBillDetail.maDatPhong = newBill.maDatPhong;
-    newBillDetail.maKhachHang = newCustomer.maKhachHang;
-    newBillDetail.tongTienCanHo = createBillDto.tongTienCanHo;
-    newBillDetail.soLuongCanHo = createBillDto.soLuongCanHo;
-    newBillDetail.thoiGianNhan = createBillDto.thoiGianNhan;
-    newBillDetail.thoiGianTra = createBillDto.thoiGianTra;
-    await this.billDetailRepository.save(newBillDetail);
+      //then create newCTDP;
+      const newBillDetail = this.billDetailRepository.create({
+        maChiTietDatPhong: `CTDP${shortid.generate()}`,
+        maBct: createBillDto.maBct,
+        maCanHo: createBillDto.maCanHo,
+        maDatPhong: newBill.maDatPhong,
+        maKhachHang: newCustomer.maKhachHang,
+        tongTienCanHo: createBillDto.tongTienCanHo,
+        soLuongCanHo: createBillDto.soLuongCanHo,
+        thoiGianNhan: createBillDto.thoiGianNhan,
+        thoiGianTra: createBillDto.thoiGianTra,
+      });
+      await this.billDetailRepository.save(newBillDetail);
 
-    const modifyApartment = await this.apartmentRepository.findOneOrFail({
-      where: { maCanHo: createBillDto.maCanHo },
-    });
-    await this.apartmentRepository.save({
-      ...modifyApartment,
-      soLuongCon: modifyApartment.soLuongCon - createBillDto.soLuongCanHo,
-    });
+      const modifyApartment = await this.apartmentRepository.findOneOrFail({
+        where: { maCanHo: createBillDto.maCanHo },
+      });
+      await this.apartmentRepository.save({
+        ...modifyApartment,
+        soLuongCon: modifyApartment.soLuongCon - createBillDto.soLuongCanHo,
+      });
 
-    //NgayDaDat
-
-    return billSaved;
+      //NgayDaDat
+      const billResult = await this.findOne(newBill.maDatPhong);
+      return billResult;
+    } catch (err) {
+      throw err;
+    }
   }
 
   async chart() {
@@ -184,20 +191,27 @@ export class BillService {
   }
 
   async findOne(id: string) {
-    const manager = getManager();
     try {
-      const getOne =
-        await manager.query(`select PhieuDatPhong.MaDatPhong,PhieuDatPhong.MaBCT,PhieuDatPhong.MaCanHo,PhieuDatPhong.MaKhachHang,
-                  Thue,TongTien,NgayTao,TongTienCanHo,SoLuongCanHo,ThoiGianNhan,ThoiGianTra
-                  from PhieuDatPhong
-                  inner join ChiTietDatPhong on PhieuDatPhong.MaDatPhong = ChiTietDatPhong.MaDatPhong
-                  where PhieuDatPhong.MaDatPhong = '${id}'`);
-      const KhachHang = await manager.query(`select * 
-                                            from KhachHang
-                                            where KhachHang.MaKhachHang = '${getOne[0].MaKhachHang}'`);
-      const obj = getOne[0];
-      obj.KhachHang = KhachHang;
-      return obj;
+      const bill: any = await this.billRepository.findOneOrFail({
+        relations,
+        where: { maDatPhong: id },
+      });
+      bill.id = bill.maDatPhong;
+      bill.tenCanHo = bill.canHo.tenCanHo;
+      bill.tenBct = bill.canHo.maBct2.tenBct;
+      bill.hinhAnhBcts = bill.canHo.maBct2.hinhAnhBcts[0].urlImageBct;
+      bill.tenKH = bill.maKhachHang2.ten;
+      bill.tongTienCanHo = bill.chiTietDatPhongs[0].tongTienCanHo;
+      bill.soLuongCanHo = bill.chiTietDatPhongs[0].soLuongCanHo;
+      bill.sdt = bill.maKhachHang2.sdt;
+      bill.email = bill.maKhachHang2.email;
+      delete bill.chiTietDatPhongs;
+      delete bill.canHo;
+      delete bill.maKhachHang2;
+      delete bill.maKhachHang;
+      delete bill.maDatPhong;
+      delete bill.maCanHo;
+      return bill;
     } catch (err) {
       throw err;
     }

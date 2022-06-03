@@ -16,6 +16,11 @@ import { PhieuDatPhong as Bill } from '../../output/entities/PhieuDatPhong';
 import { ApiQuery, ApiTags } from '@nestjs/swagger';
 import { CreatePaymentDto } from './dto/creat-payment.dto';
 import { Response } from 'express';
+import {
+  CANNOT_POST_WITHOUT_BODY,
+  NOT_FOUND,
+  SOMETHING_WRONG,
+} from 'src/constant/constant';
 
 @ApiTags('Bill')
 @Controller('bill')
@@ -29,8 +34,12 @@ export class BillController {
   }
 
   @Post()
-  create(@Body() createBillDto: CreateBillDto) {
-    return this.billService.create(createBillDto);
+  async create(@Body() createBillDto: CreateBillDto, @Res() res: Response) {
+    const bill = await this.billService.create(createBillDto);
+    if (!bill) {
+      return res.status(400).json({ success: false, message: SOMETHING_WRONG });
+    }
+    res.status(200).json({ success: true, body: bill });
   }
 
   @Post('charge')
@@ -45,8 +54,16 @@ export class BillController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.billService.findOne(id);
+  async findOne(@Param('id') id: string, @Res() res: Response) {
+    const bill = await this.billService.findOne(id);
+    if (!bill) {
+      res.status(404).json({ success: false, message: NOT_FOUND });
+    }
+    try {
+      res.status(200).json({ success: true, body: bill });
+    } catch (err) {
+      res.status(404).json({ success: false, message: NOT_FOUND });
+    }
   }
 
   // @Patch(':id')
