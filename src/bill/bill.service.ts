@@ -168,9 +168,9 @@ export class BillService {
       for (let i = 0; i < result.length; i++) {
         for (let j = 0; j < result[i].bills.length; j++) {
           if (result[i].bills.length > 1) {
-            const agg = result[i].bills.reduce(
-              (a: any, b: any) => a.TongTien + b.TongTien,
-            );
+            const agg = result[i].bills.reduce((a: any, b: any) => {
+              return a + b.TongTien;
+            }, 0);
             result[i].bills = agg;
           } else {
             const [price] = result[i].bills.map((a: any) => a.TongTien);
