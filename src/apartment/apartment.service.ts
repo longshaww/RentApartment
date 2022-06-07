@@ -156,7 +156,7 @@ export class ApartmentService {
 
   async getOneById(id: string): Promise<Apartment> {
     try {
-      const apartment = await this.apartmentRepository.findOne({
+      const apartment: any = await this.apartmentRepository.findOne({
         relations,
         where: {
           maCanHo: id,
@@ -164,6 +164,7 @@ export class ApartmentService {
       });
       const convenientQuery = await convenientQueryByID(id);
       apartment.tienNghiCanHo = convenientQuery;
+      apartment.maPartner = apartment.maBct2.maPartner;
       return apartment;
     } catch (err) {
       throw err;
