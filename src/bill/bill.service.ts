@@ -50,16 +50,18 @@ export class BillService {
     return paymentIntent.client_secret;
   }
 
-  async findAll() {
+  async findAll(maBct?: string) {
     try {
       const bills = await this.billRepository.find({ relations });
-      bills.map((bill: any) => {
+
+      const result = bills.map((bill: any) => {
         bill.id = bill.maDatPhong;
         bill.tenCanHo = bill.canHo.tenCanHo;
         bill.tenBct = bill.canHo.maBct2.tenBct;
         bill.hinhAnhBcts = bill.canHo.maBct2.hinhAnhBcts[0].urlImageBct;
         bill.tenKH = bill.maKhachHang2.ten;
         bill.tongTienCanHo = bill.chiTietDatPhongs[0].tongTienCanHo;
+        bill.ngayTao = moment(bill.ngayTao).format('ll');
         delete bill.chiTietDatPhongs;
         delete bill.canHo;
         delete bill.maKhachHang2;
@@ -68,7 +70,12 @@ export class BillService {
         delete bill.maCanHo;
         return bill;
       });
-      return bills;
+
+      if (maBct) {
+        const filter = result.filter((bill) => bill.maBct === maBct);
+        return filter;
+      }
+      return result;
     } catch (err) {
       throw err;
     }
@@ -77,7 +84,7 @@ export class BillService {
     try {
       //create new customer
       const newCustomer = this.customerRepository.create({
-        maKhachHang: `KH${shortid.generate()}`,
+        maKhachHang: createBillDto.maKhachHang,
         ten: createBillDto.ten,
         email: createBillDto.email,
         sdt: createBillDto.sdt,
@@ -123,6 +130,73 @@ export class BillService {
       //NgayDaDat
       const billResult = await this.findOne(newBill.maDatPhong);
       return billResult;
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  async findAllWithChart(maBct: string) {
+    let days = [];
+    try {
+      const manager = getManager();
+      const getAll =
+        await manager.query(`select PhieuDatPhong.MaDatPhong,PhieuDatPhong.MaBCT,PhieuDatPhong.MaCanHo,PhieuDatPhong.MaKhachHang,
+                  Thue,TongTien,NgayTao,TongTienCanHo,SoLuongCanHo,ThoiGianNhan,ThoiGianTra
+                  from PhieuDatPhong
+                  inner join ChiTietDatPhong on PhieuDatPhong.MaDatPhong = ChiTietDatPhong.MaDatPhong
+                  where PhieuDatPhong.MaBCT = '${maBct}'`);
+      if (!getAll.length) {
+        return [];
+      }
+      let diffArr = [];
+      for (let i = 0; i < getAll.length; i++) {
+        var current = getAll[i].NgayTao;
+        const diff = moment(current).diff(moment(), 'days');
+        diffArr.push(diff);
+      }
+      let smallest = diffArr[0];
+      for (var i = 1; i < diffArr.length; i++) {
+        if (diffArr[i] < smallest) {
+          smallest = diffArr[i];
+        }
+      }
+      const index = diffArr.indexOf(smallest);
+      for (let i = 0; i < 7; i++) {
+        days.push(moment(getAll[index].NgayTao).add(i, 'days'));
+      }
+
+      const result = days.map((d: any) => {
+        const filterBills = getAll.filter((b: any) =>
+          moment(b.NgayTao).isSame(d, 'days'),
+        );
+        return {
+          day: d,
+          bills: filterBills,
+        };
+      });
+
+      for (let i = 0; i < result.length; i++) {
+        for (let j = 0; j < result[i].bills.length; j++) {
+          if (result[i].bills.length > 1) {
+            const agg = result[i].bills.reduce((a: any, b: any) => {
+              return a + b.TongTien;
+            }, 0);
+            result[i].bills = agg;
+          } else {
+            const [price] = result[i].bills.map((a: any) => a.TongTien);
+            result[i].bills = price;
+          }
+        }
+      }
+      result.map((r) => {
+        if (r.bills.length === 0) {
+          r.bills = 0;
+        }
+        r.day = moment(r.day).format('ll');
+      });
+
+      const total = result.reduce((a, b) => a + b.bills, 0);
+      return { total, data: result };
     } catch (err) {
       throw err;
     }
@@ -184,7 +258,8 @@ export class BillService {
         }
         r.day = moment(r.day).format('ll');
       });
-      return result;
+      const total = result.reduce((a, b) => a + b.bills, 0);
+      return { total, data: result };
     } catch (err) {
       throw err;
     }

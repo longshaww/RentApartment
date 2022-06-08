@@ -40,6 +40,9 @@ export class CreateBillDto {
   @ApiProperty()
   maBct: string;
   //
+  @IsString()
+  @IsNotEmpty()
+  @ApiProperty()
   maKhachHang: string;
 
   @IsString()

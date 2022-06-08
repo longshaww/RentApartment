@@ -27,10 +27,18 @@ import {
 export class BillController {
   constructor(private readonly billService: BillService) {}
 
+  @ApiQuery({ name: 'maBct', required: false })
   @Get()
-  async findAll(@Res() res: Response) {
-    const bills = await this.billService.findAll();
+  async findAll(@Res() res: Response, @Query('maBct') maBct?: string) {
+    const bills = await this.billService.findAll(maBct);
     res.status(200).json(bills);
+  }
+
+  @ApiQuery({ name: 'maBct', required: true })
+  @Get('lessor')
+  async findAllWithChart(@Res() res: Response, @Query('maBct') maBct: string) {
+    const bills = await this.billService.findAllWithChart(maBct);
+    res.status(200).json({ ...bills, success: true });
   }
 
   @Post()
@@ -50,7 +58,7 @@ export class BillController {
   @Get('chart')
   async chart(@Res() res: Response) {
     const bills = await this.billService.chart();
-    res.status(200).json(bills);
+    res.status(200).json({ ...bills, success: true });
   }
 
   @Get(':id')
