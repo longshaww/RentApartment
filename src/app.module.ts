@@ -55,6 +55,7 @@ import { RouterModule } from '@nestjs/core';
       },
     ]),
     ServeStaticModule.forRoot({
+      serveRoot: '/api/static',
       rootPath: join(__dirname, '..', 'upload'),
     }),
   ],

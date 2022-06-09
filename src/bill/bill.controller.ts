@@ -38,7 +38,14 @@ export class BillController {
   @Get('lessor')
   async findAllWithChart(@Res() res: Response, @Query('maBct') maBct: string) {
     const bills = await this.billService.findAllWithChart(maBct);
-    res.status(200).json({ ...bills, success: true });
+    if (!bills) {
+      res.status(404).json({ success: false, message: SOMETHING_WRONG });
+    }
+    try {
+      res.status(200).json({ ...bills, success: true });
+    } catch (err) {
+      res.status(400).json({ success: false, message: err });
+    }
   }
 
   @Post()

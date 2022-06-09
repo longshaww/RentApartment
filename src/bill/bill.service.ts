@@ -53,7 +53,6 @@ export class BillService {
   async findAll(maBct?: string) {
     try {
       const bills = await this.billRepository.find({ relations });
-
       const result = bills.map((bill: any) => {
         bill.id = bill.maDatPhong;
         bill.tenCanHo = bill.canHo.tenCanHo;
@@ -146,7 +145,7 @@ export class BillService {
                   inner join ChiTietDatPhong on PhieuDatPhong.MaDatPhong = ChiTietDatPhong.MaDatPhong
                   where PhieuDatPhong.MaBCT = '${maBct}'`);
       if (!getAll.length) {
-        return [];
+        return { total: 0, data: [] };
       }
       let diffArr = [];
       for (let i = 0; i < getAll.length; i++) {
