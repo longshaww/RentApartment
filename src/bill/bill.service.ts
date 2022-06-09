@@ -196,7 +196,7 @@ export class BillService {
       });
 
       const total = result.reduce((a, b) => a + b.bills, 0);
-      return { total, data: result };
+      return { total: Math.round(total), data: result };
     } catch (err) {
       throw err;
     }
@@ -259,7 +259,7 @@ export class BillService {
         r.day = moment(r.day).format('ll');
       });
       const total = result.reduce((a, b) => a + b.bills, 0);
-      return { total, data: result };
+      return { total: Math.round(total), data: result };
     } catch (err) {
       throw err;
     }

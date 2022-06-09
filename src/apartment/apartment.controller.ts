@@ -123,10 +123,15 @@ export class ApartmentController {
   @Delete(':id')
   @ApiOkResponse({ type: Apartment })
   @ApiBadRequestResponse()
-  remove(@Param('id') id: string) {
-    if (!Param) {
-      throw new HttpException('Bad Request', HttpStatus.BAD_REQUEST);
+  async remove(@Param('id') id: string, @Res() res: Response) {
+    if (!id) {
+      res.status(404).json({ success: false, message: CANNOT_POST_WITHOUT_ID });
     }
-    return this.apartmentsService.remove(id);
+    try {
+      const deleteApartment = await this.apartmentsService.remove(id);
+      res.status(200).json({ success: true, body: deleteApartment });
+    } catch (err) {
+      res.status(400).json({ success: false, message: err });
+    }
   }
 }

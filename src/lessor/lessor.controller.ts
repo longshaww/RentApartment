@@ -121,4 +121,19 @@ export class LessorController {
       res.status(400).json({ success: false, message: err });
     }
   }
+
+  @Put('/average/:id')
+  async updateAveragePrice(@Param('id') id: string, @Res() res: Response) {
+    if (!id) {
+      return res
+        .status(404)
+        .json({ success: false, message: CANNOT_POST_WITHOUT_ID });
+    }
+    try {
+      const updateLessor = await this.lessorService.updateAveragePrice(id);
+      res.status(200).json({ success: true, body: updateLessor });
+    } catch (err) {
+      res.status(400).json({ success: false, message: err });
+    }
+  }
 }

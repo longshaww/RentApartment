@@ -8,8 +8,7 @@ import { getManager, Repository } from 'typeorm';
 import { LessorRelations as relations } from 'src/relations/relations';
 import { CreateLessorDto } from './dto/create-lessor.dto';
 import { UpdateLessorDto } from './dto/update-lessor.dto';
-import * as moment from 'moment';
-import { NgayDaDat } from '../../output/entities/NgayDaDat';
+import { CanHo as Apartment } from '../../output/entities/CanHo';
 
 const shortid = require('shortid');
 
@@ -24,6 +23,8 @@ export class LessorService {
     private typeStayRepository: Repository<TypeStay>,
     @InjectRepository(LessorCovenient)
     private lessorCovenientRepository: Repository<LessorCovenient>,
+    @InjectRepository(Apartment)
+    private apartmentRepository: Repository<Apartment>,
   ) {}
 
   async getAll(q: string, partnerID: string): Promise<Lessor[]> {
@@ -178,6 +179,27 @@ export class LessorService {
       //delete lessor
       const thisLessor = await this.lessorRepository.findOneOrFail(id);
       return this.lessorRepository.remove(thisLessor);
+    } catch (err) {
+      throw err;
+    }
+  }
+  async updateAveragePrice(id: string) {
+    try {
+      const updateLessor = await this.lessorRepository.findOneOrFail(id);
+      const listApartment = await this.apartmentRepository.find({
+        where: { maBct: id },
+      });
+      const total = listApartment.reduce((a, b) => a + b.gia, 0);
+      const average = total / listApartment.length;
+      await this.lessorRepository.save({
+        ...updateLessor,
+        giaTrungBinh: listApartment.length ? Math.round(average) : 0,
+      });
+      const result = await this.lessorRepository.findOneOrFail({
+        relations,
+        where: { maBct: id },
+      });
+      return result;
     } catch (err) {
       throw err;
     }
