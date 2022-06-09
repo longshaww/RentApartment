@@ -8,14 +8,8 @@ const AllowUnauthorizedRequest = () =>
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
-  @Get('my-unauthorized-path')
-  @AllowUnauthorizedRequest()
-  myHandler() {
-    return { unauthorized: true };
-  }
-
-  @Get('hello')
-  getHello(): string {
-    return this.appService.getHello();
+  @Get()
+  getHello(): Object {
+    return this.appService.greeting();
   }
 }

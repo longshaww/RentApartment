@@ -70,7 +70,7 @@ export class BillController {
     try {
       res.status(200).json({ success: true, body: bill });
     } catch (err) {
-      res.status(404).json({ success: false, message: NOT_FOUND });
+      res.status(404).json({ success: false, message: err });
     }
   }
 

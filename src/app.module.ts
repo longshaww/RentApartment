@@ -12,6 +12,7 @@ import * as Joi from 'joi';
 import { JwtStrategy } from './auth/jwt.strategy';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
+import { RouterModule } from '@nestjs/core';
 
 @Module({
   imports: [
@@ -29,6 +30,30 @@ import { join } from 'path';
         // ...
       }),
     }),
+    RouterModule.register([
+      {
+        path: 'api',
+        module: AppModule,
+        children: [
+          {
+            path: '/',
+            module: ApartmentModule,
+          },
+          {
+            path: '/',
+            module: LessorModule,
+          },
+          {
+            path: '/',
+            module: BillModule,
+          },
+          {
+            path: '/',
+            module: BookedDateModule,
+          },
+        ],
+      },
+    ]),
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'upload'),
     }),

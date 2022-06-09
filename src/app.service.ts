@@ -2,7 +2,11 @@ import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class AppService {
-  getHello(): string {
-    return 'Hello World!';
+  greeting(): Object {
+    return {
+      success: true,
+      message: 'Welcome to Traveloka !',
+      description: 'Develope by LongTran',
+    };
   }
 }
