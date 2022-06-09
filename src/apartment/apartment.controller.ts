@@ -25,7 +25,7 @@ import {
 } from '@nestjs/swagger';
 import { ApiTags } from '@nestjs/swagger';
 import { ApartmentService } from './apartment.service';
-import { CanHo as Apartment } from '../../output/entities/CanHo';
+import { CanHo as Apartment } from '../entities/CanHo';
 import { UpdateApartmentDTO } from './dto/update-apartment.dto';
 import { CreateApartmentDto } from './dto/create-apartment.dto';
 import { AnyFilesInterceptor } from '@nestjs/platform-express';

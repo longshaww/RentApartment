@@ -8,13 +8,8 @@ const config: SqlServerConnectionOptions = {
   username: 'sa',
   password: 'Qq123456789',
   database: 'apartment',
-  // entities: ['dist/src/**/*.entity.js'],
-  entities: ['dist/output/entities/*js'],
+  entities: ['dist/entities/*js'],
   synchronize: true,
-  migrations: ['dist/src/db/migrations/*js'],
-  cli: {
-    migrationsDir: 'src/db/migrations',
-  },
 };
 
 export default config;

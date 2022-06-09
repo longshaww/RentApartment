@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import config from '../ormconfig';
+import config from './ormconfig';
 import { LessorModule } from './lessor/lessor.module';
 import { ApartmentModule } from './apartment/apartment.module';
 import { BillModule } from './bill/bill.module';

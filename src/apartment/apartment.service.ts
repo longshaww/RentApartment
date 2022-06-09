@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common';
-import { CanHo as Apartment } from '../../output/entities/CanHo';
-import { HinhAnhCanHo as ApartmentImage } from 'output/entities/HinhAnhCanHo';
-import { TienNghiCanHo as ApartmentCovenient } from 'output/entities/TienNghiCanHo';
-import { CanHoTienNghiCanHo as ApartmentXApartmentCovenient } from 'output/entities/CanHoTienNghiCanHo';
+import { CanHo as Apartment } from '../entities/CanHo';
+import { HinhAnhCanHo as ApartmentImage } from 'src/entities/HinhAnhCanHo';
+import { TienNghiCanHo as ApartmentCovenient } from 'src/entities/TienNghiCanHo';
+import { CanHoTienNghiCanHo as ApartmentXApartmentCovenient } from 'src/entities/CanHoTienNghiCanHo';
 import { InjectRepository } from '@nestjs/typeorm';
 import { getManager, Repository } from 'typeorm';
 import { ApartmentRelations as relations } from '../relations/relations';
-import { ChiTietDatPhong as BillDetail } from 'output/entities/ChiTietDatPhong';
+import { ChiTietDatPhong as BillDetail } from 'src/entities/ChiTietDatPhong';
 import { UpdateApartmentDTO } from './dto/update-apartment.dto';
 import { CreateApartmentDto } from './dto/create-apartment.dto';
 import * as moment from 'moment';

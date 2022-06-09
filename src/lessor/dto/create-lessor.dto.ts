@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
-import { TienNghiBenChoThue } from 'output/entities/TienNghiBenChoThue';
+import { TienNghiBenChoThue } from 'src/entities/TienNghiBenChoThue';
 
 export class CreateLessorDto {
   @IsString()

@@ -12,7 +12,7 @@ import {
 import { BillService } from './bill.service';
 import { CreateBillDto } from './dto/create-bill.dto';
 import { UpdateBillDto } from './dto/update-bill.dto';
-import { PhieuDatPhong as Bill } from '../../output/entities/PhieuDatPhong';
+import { PhieuDatPhong as Bill } from '../entities/PhieuDatPhong';
 import { ApiQuery, ApiTags } from '@nestjs/swagger';
 import { CreatePaymentDto } from './dto/creat-payment.dto';
 import { Response } from 'express';

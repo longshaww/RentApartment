@@ -16,7 +16,7 @@ import {
 import { LessorService } from './lessor.service';
 import { CreateLessorDto } from './dto/create-lessor.dto';
 import { UpdateLessorDto } from './dto/update-lessor.dto';
-import { BenChoThue as Lessor } from '../../output/entities/BenChoThue';
+import { BenChoThue as Lessor } from '../entities/BenChoThue';
 import {
   ApiNotFoundResponse,
   ApiOkResponse,

@@ -2,11 +2,11 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ApartmentController } from './apartment.controller';
 import { ApartmentService } from './apartment.service';
-import { CanHo as Apartment } from 'output/entities/CanHo';
-import { HinhAnhCanHo as ApartmentImage } from 'output/entities/HinhAnhCanHo';
-import { TienNghiCanHo as ApartmentCovenient } from 'output/entities/TienNghiCanHo';
-import { CanHoTienNghiCanHo as ApartmentXApartmentCovenient } from 'output/entities/CanHoTienNghiCanHo';
-import { ChiTietDatPhong } from 'output/entities/ChiTietDatPhong';
+import { CanHo as Apartment } from 'src/entities/CanHo';
+import { HinhAnhCanHo as ApartmentImage } from 'src/entities/HinhAnhCanHo';
+import { TienNghiCanHo as ApartmentCovenient } from 'src/entities/TienNghiCanHo';
+import { CanHoTienNghiCanHo as ApartmentXApartmentCovenient } from 'src/entities/CanHoTienNghiCanHo';
+import { ChiTietDatPhong } from 'src/entities/ChiTietDatPhong';
 import { MulterModule } from '@nestjs/platform-express';
 import { join } from 'path';
 

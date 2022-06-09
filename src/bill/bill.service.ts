@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { getManager, Repository } from 'typeorm';
 import { CreateBillDto } from './dto/create-bill.dto';
-import { CanHo as Apartment } from 'output/entities/CanHo';
-import { KhachHang as Customer } from '../../output/entities/KhachHang';
-import { PhieuDatPhong as Bill } from '../../output/entities/PhieuDatPhong';
-import { ChiTietDatPhong as BillDetail } from '../../output/entities/ChiTietDatPhong';
+import { CanHo as Apartment } from 'src/entities/CanHo';
+import { KhachHang as Customer } from '../entities/KhachHang';
+import { PhieuDatPhong as Bill } from '../entities/PhieuDatPhong';
+import { ChiTietDatPhong as BillDetail } from '../entities/ChiTietDatPhong';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ConfigService } from '@nestjs/config';
 import Stripe from 'stripe';

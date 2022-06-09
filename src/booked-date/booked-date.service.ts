@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { NgayDaDat as BookedDate } from 'output/entities/NgayDaDat';
+import { NgayDaDat as BookedDate } from 'src/entities/NgayDaDat';
 import { getManager, Repository } from 'typeorm';
 import * as moment from 'moment';
 import { BookedDateRelation as relations } from 'src/relations/relations';

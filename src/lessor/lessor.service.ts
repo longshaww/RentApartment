@@ -1,14 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { BenChoThue as Lessor } from '../../output/entities/BenChoThue';
-import { HinhAnhBct as LessorImages } from '../../output/entities/HinhAnhBct';
-import { LoaILuuTru as TypeStay } from '../../output/entities/LoaILuuTru';
-import { TienNghiBenChoThue as LessorCovenient } from '../../output/entities/TienNghiBenChoThue';
+import { BenChoThue as Lessor } from '../entities/BenChoThue';
+import { HinhAnhBct as LessorImages } from '../entities/HinhAnhBct';
+import { LoaILuuTru as TypeStay } from '../entities/LoaILuuTru';
+import { TienNghiBenChoThue as LessorCovenient } from '../entities/TienNghiBenChoThue';
 import { getManager, Repository } from 'typeorm';
 import { LessorRelations as relations } from 'src/relations/relations';
 import { CreateLessorDto } from './dto/create-lessor.dto';
 import { UpdateLessorDto } from './dto/update-lessor.dto';
-import { CanHo as Apartment } from '../../output/entities/CanHo';
+import { CanHo as Apartment } from '../entities/CanHo';
 
 const shortid = require('shortid');
 
